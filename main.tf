@@ -4,5 +4,5 @@ provider "aws" {
 }
 
 module "prisma_iam_role" {
-  source = "./prisma_iam_role"
+  source = "prisma_iam_role"
 }
