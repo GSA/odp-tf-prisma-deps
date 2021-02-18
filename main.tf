@@ -1,8 +1,8 @@
 resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
-  name = "${terraform.workspace}-prisma-cloud-iam-read-only-policy"
-  path = "/"
+  name        = "prisma-cloud-iam-read-only-policy"
+  path        = "/"
   description = ""
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -59,10 +59,10 @@ EOF
 
 
 resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_elastic_beanstalk" {
-  name = "${terraform.workspace}-prisma-cloud-iam-read-only-policy-elastic-beanstalk"
-  path = "/"
+  name        = "prisma-cloud-iam-read-only-policy-elastic-beanstalk"
+  path        = "/"
   description = ""
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -81,10 +81,10 @@ EOF
 
 
 resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_compute" {
-  name = "${terraform.workspace}-prisma-cloud-iam-read-only-policy-compute"
-  path = "/"
+  name        = "prisma-cloud-iam-read-only-policy-compute"
+  path        = "/"
   description = ""
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -113,10 +113,10 @@ EOF
 
 
 resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy" {
-  name = "${terraform.workspace}-prisma-cloud-iam-remediation-policy"
-  path = "/"
+  name        = "prisma-cloud-iam-remediation-policy"
+  path        = "/"
   description = ""
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -152,10 +152,10 @@ EOF
 
 
 resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy_compute" {
-  name = "${terraform.workspace}-prisma-cloud-iam-remediation-policy-compute"
-  path = "/"
+  name        = "prisma-cloud-iam-remediation-policy-compute"
+  path        = "/"
   description = ""
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -180,7 +180,7 @@ EOF
 
 
 resource "aws_iam_role" "prisma_cloud_iam_role" {
-  name = "${terraform.workspace}-${var.prisma_cloud_role_name}"
+  name               = "${var.prisma_cloud_role_name}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -188,7 +188,7 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::188619942792:root"
+        "AWS": "arn:aws:iam::${var.aws_account_id}:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -219,13 +219,13 @@ resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_clou
 }
 
 resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_remediation_policy" {
-  count = var.is_read_only ? 0 : 1
+  count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
   policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_remediation_policy_compute" {
-  count = var.is_read_only ? 0 : 1
+  count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
   policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy_compute.arn
 }
