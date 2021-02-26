@@ -45,6 +45,7 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
         "sns:ListPlatformApplications",
         "ssm:GetParameters",
         "ssm:ListTagsForResource",
+        "ssm:GetDocument",
         "sqs:SendMessage",
         "elasticmapreduce:ListSecurityConfigurations",
         "elasticmapreduce:GetBlockPublicAccessConfiguration",
@@ -213,6 +214,10 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
 EOF
 }
 
+resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_aws_managed_security_audit_policy" {
+  role       = aws_iam_role.prisma_cloud_iam_role.name
+  policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
+}
 
 resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy" {
   role       = aws_iam_role.prisma_cloud_iam_role.name
