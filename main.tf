@@ -5,7 +5,7 @@ data "aws_secretsmanager_secret_version" "prisma_secrets" {
 locals {
   external_id = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_external_id"]
   account_id  = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_aws_account_id"]
-  role_name   = ${jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_role_name"]}
+  role_name   = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_role_name"]
 }
 
 
