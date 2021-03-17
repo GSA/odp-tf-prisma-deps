@@ -141,6 +141,7 @@ resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy" {
         "ec2:ModifySubnetAttribute",
         "ec2:RevokeSecurityGroupEgress",
         "ec2:RevokeSecurityGroupIngress",
+        "ec2:SearchTransitGatewayRoutes",
         "eks:UpdateClusterConfig",
         "elasticache:ModifyReplicationGroup",
         "elasticloadbalancing:ModifyLoadBalancerAttributes",
