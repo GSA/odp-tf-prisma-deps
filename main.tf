@@ -29,6 +29,8 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
         "ecr:GetLifecyclePolicy",
         "ecr:ListTagsForResource",
         "eks:ListTagsForResource",
+        "eks:ListFargateProfiles",
+        "eks:DescribeFargateProfile",
         "es:ListTags",
         "elasticbeanstalk:ListTagsForResource",
         "elasticfilesystem:DescribeTags",
@@ -59,7 +61,8 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
         "waf:ListTagsForResource",
         "waf:GetLoggingConfiguration",
         "waf-regional:ListResourcesForWebACL",
-        "waf-regional:ListTagsForResource"
+        "waf-regional:ListTagsForResource",
+        "waf-regional:GetLoggingConfiguration"
       ],
       "Effect": "Allow",
       "Resource": "*"
