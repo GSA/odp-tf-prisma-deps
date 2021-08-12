@@ -1,13 +1,6 @@
-data "aws_secretsmanager_secret_version" "prisma_secrets" {
-  secret_id  = var.prisma_secrets_name
+locals  {
+  role_name = "PrismaCloudAwsOrgMonitoringRole"
 }
-
-locals {
-  external_id = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_external_id"]
-  account_id  = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_aws_account_id"]
-  role_name   = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_role_name"]
-}
-
 
 resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
   name        = "prisma-cloud-iam-read-only-policy"
@@ -207,12 +200,12 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${local.account_id}:root"
+        "AWS": "arn:aws:iam::${var.account_id}:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
         "StringEquals": {
-          "sts:ExternalId": "${local.external_id}"
+          "sts:ExternalId": "${var.external_id}"
         }
       }
     }
