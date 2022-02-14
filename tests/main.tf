@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "under_test" {
-  source = "../terraform"
+  source = "../"
 
   # Any arguments the module requires
 }
