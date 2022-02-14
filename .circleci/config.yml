@@ -21,7 +21,7 @@ commands:
             export tf_destroy=<< parameters.also_destroy >>
             export tf_command=<< parameters.run_command >>
             ls -an
-            cd terraform
+            cd tests
             terraform version
             terraform init 
             terraform plan
