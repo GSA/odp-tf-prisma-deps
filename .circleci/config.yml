@@ -20,6 +20,7 @@ commands:
           command: |
             export tf_destroy=<< parameters.also_destroy >>
             export tf_command=<< parameters.run_command >>
+            ls -an
             cd /terraform
             terraform version
             terraform init 
