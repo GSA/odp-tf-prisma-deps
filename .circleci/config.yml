@@ -20,8 +20,9 @@ commands:
           command: |
             export tf_destroy=<< parameters.also_destroy >>
             export tf_command=<< parameters.run_command >>
+            cd /terraform
             terraform version
-            terraform init
+            terraform init 
             terraform plan
 
   tflint-tfsec: 
