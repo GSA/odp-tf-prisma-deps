@@ -1,13 +1,6 @@
-data "aws_secretsmanager_secret_version" "prisma_secrets" {
-  secret_id  = var.prisma_secrets_name
+locals  {
+  role_name = "PrismaCloudAwsOrgMonitoringRole"
 }
-
-locals {
-  external_id = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_external_id"]
-  account_id  = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_aws_account_id"]
-  role_name   = jsondecode(data.aws_secretsmanager_secret_version.prisma_secrets.secret_string)["prisma_role_name"]
-}
-
 
 resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
   name        = "prisma-cloud-iam-read-only-policy"
@@ -20,35 +13,55 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
     {
       "Action": [
         "apigateway:GET",
+        "backup:ListBackupVaults",
+        "backup:ListTags",
+        "backup:GetBackupVaultAccessPolicy",
         "cloudwatch:ListTagsForResource",
         "cognito-identity:ListTagsForResource",
+        "cognito-identity:DescribeIdentityPool",
         "cognito-idp:ListTagsForResource",
+        "codeartifact:ListDomains",
+        "codeartifact:DescribeDomain",
+        "codeartifact:GetDomainPermissionsPolicy",
+        "codeartifact:ListTagsForResource",
+        "codeartifact:ListRepositories",
+        "codeartifact:DescribeRepository",
+        "codeartifact:GetRepositoryPermissionsPolicy",
         "ds:ListTagsForResource",
         "dynamodb:ListTagsOfResource",
+        "ec2:GetEbsEncryptionByDefault",
+        "ec2:SearchTransitGatewayRoutes",
         "ecr:DescribeImages",
         "ecr:GetLifecyclePolicy",
+        "ecr:ListImages",
         "ecr:ListTagsForResource",
-        "es:ListTags",
+        "ecr:DescribeImageScanFindings",
+        "eks:ListTagsForResource",
+        "eks:ListFargateProfiles",
+        "eks:DescribeFargateProfile",
         "elasticbeanstalk:ListTagsForResource",
         "elasticfilesystem:DescribeTags",
+        "elasticfilesystem:DescribeFileSystemPolicy",
         "elasticache:ListTagsForResource",
+        "es:ListTags",
         "glacier:GetVaultLock",
         "glacier:ListTagsForVault",
         "glue:GetConnections",
         "glue:GetSecurityConfigurations",
+        "kafka:ListClusters",
         "logs:GetLogEvents",
         "mq:listBrokers",
         "mq:describeBroker",
         "ram:GetResourceShares",
-        "sns:ListTagsForResource",
-        "sns:ListPlatformApplications",
+        "ssm:GetDocument",
         "ssm:GetParameters",
         "ssm:ListTagsForResource",
-        "ssm:GetDocument",
         "sqs:SendMessage",
         "elasticmapreduce:ListSecurityConfigurations",
         "elasticmapreduce:GetBlockPublicAccessConfiguration",
         "sns:listSubscriptions",
+        "sns:ListTagsForResource",
+        "sns:ListPlatformApplications",
         "wafv2:ListResourcesForWebACL",
         "wafv2:ListWebACLs",
         "wafv2:ListTagsForResource",
@@ -57,9 +70,15 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
         "waf:GetWebACL",
         "waf:ListTagsForResource",
         "waf:GetLoggingConfiguration",
+        "waf-regional:GetLoggingConfiguration",
         "waf-regional:ListResourcesForWebACL",
         "waf-regional:ListTagsForResource",
-        "waf-regional:GetLoggingConfiguration"
+        "codebuild:BatchGetProjects",
+        "s3:DescribeJob",
+        "s3:ListJobs",
+        "s3:GetJobTagging",
+        "ssm:GetInventory",
+        "shield:GetSubscriptionState"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -104,21 +123,13 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_compute" {
       "Action": [
         "ecr:BatchCheckLayerAvailability",
         "ecr:BatchGetImage",
-        "ecr:DescribeImages",
-        "ec2:SearchTransitGatewayRoutes",
-        "ec2:GetEbsEncryptionByDefault",
-        "eks:ListFargateProfiles",
-        "eks:DescribeFargateProfile", 
-        "eks:ListTagsForResource",
-        "eks:ListFargateProfiles",
-        "ec2:GetEbsEncryptionByDefault",
-        "ecr:DescribeImageScanFindings",
         "ecr:GetAuthorizationToken",
         "ecr:GetDownloadUrlForLayer",
-        "ecr:GetLifecyclePolicy",
         "ecr:GetLifecyclePolicyPreview",
-        "ecr:ListImages",
-        "ecr:ListTagsForResource",
+        "secretsmanager:GetSecretValue",
+        "lambda:GetLayerVersion",
+        "ssm:GetParameter",
+        "securityhub:BatchImportFindings",
         "kms:Decrypt",
         "lambda:GetFunction"
       ],
@@ -207,12 +218,12 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${local.account_id}:root"
+        "AWS": "arn:aws:iam::${var.account_id}:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
         "StringEquals": {
-          "sts:ExternalId": "${local.external_id}"
+          "sts:ExternalId": "${var.external_id}"
         }
       }
     }
