@@ -20,31 +20,9 @@ commands:
           command: |
             export tf_destroy=<< parameters.also_destroy >>
             export tf_command=<< parameters.run_command >>
-
-            cd << parameters.terraform_dir >> 
-            
-
             terraform version
-
-            if [ "${tf_command}" != "validate" ]
-            then
-              terraform init -backend-config="bucket=${BACKEND_BUCKET}" -backend-config="key=terraform-states/${CIRCLE_PROJECT_REPONAME}/${TF_VAR_appenv}" -backend-config="region=${TF_VAR_aws_region}"
-            else
-              terraform init
-            fi
-
-            if [ "${tf_destroy}" != "only" ]
-            then  
-              terraform << parameters.run_command >>  
-            fi
-            
-            #Destroy infrastructure if requested 
-            
-            if [ "${tf_destroy}" != "false" ]
-            then 
-              terraform destroy -var-file=../terraform/ref-arch.tfvars -auto-approve  
-            fi
-
+            terraform init
+            terraform plan
 
   tflint-tfsec: 
     description: "Runs tflint and tfsec against CloudWatch terraform code."
