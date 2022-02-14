@@ -20,6 +20,10 @@ commands:
           command: |
             export tf_destroy=<< parameters.also_destroy >>
             export tf_command=<< parameters.run_command >>
+            export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY}"
+            export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_KEY}"
+            export AWS_DEFAULT_REGION="us-east-1"
+
             ls -an
             cd tests
             terraform version
