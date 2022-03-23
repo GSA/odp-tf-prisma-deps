@@ -78,7 +78,9 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
         "s3:ListJobs",
         "s3:GetJobTagging",
         "ssm:GetInventory",
-        "shield:GetSubscriptionState"
+        "shield:GetSubscriptionState",
+        "storagegateway:DescribeSMBFileShares",
+        "storagegateway:DescribeSMBSettings"
       ],
       "Effect": "Allow",
       "Resource": "*"
