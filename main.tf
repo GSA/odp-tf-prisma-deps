@@ -12,75 +12,134 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
   "Statement": [
     {
       "Action": [
-        "apigateway:GET",
-        "backup:ListBackupVaults",
-        "backup:ListTags",
-        "backup:GetBackupVaultAccessPolicy",
-        "cloudwatch:ListTagsForResource",
-        "cognito-identity:ListTagsForResource",
-        "cognito-identity:DescribeIdentityPool",
-        "cognito-idp:ListTagsForResource",
-        "codeartifact:ListDomains",
-        "codeartifact:DescribeDomain",
-        "codeartifact:GetDomainPermissionsPolicy",
-        "codeartifact:ListTagsForResource",
-        "codeartifact:ListRepositories",
-        "codeartifact:DescribeRepository",
-        "codeartifact:GetRepositoryPermissionsPolicy",
-        "ds:ListTagsForResource",
-        "dynamodb:ListTagsOfResource",
-        "ec2:GetEbsEncryptionByDefault",
-        "ec2:SearchTransitGatewayRoutes",
-        "ecr:DescribeImages",
-        "ecr:GetLifecyclePolicy",
-        "ecr:ListImages",
-        "ecr:ListTagsForResource",
-        "ecr:DescribeImageScanFindings",
-        "eks:ListTagsForResource",
-        "eks:ListFargateProfiles",
-        "eks:DescribeFargateProfile",
-        "elasticbeanstalk:ListTagsForResource",
-        "elasticfilesystem:DescribeTags",
-        "elasticfilesystem:DescribeFileSystemPolicy",
-        "elasticache:ListTagsForResource",
-        "es:ListTags",
-        "glacier:GetVaultLock",
-        "glacier:ListTagsForVault",
-        "glue:GetConnections",
-        "glue:GetSecurityConfigurations",
-        "kafka:ListClusters",
-        "logs:GetLogEvents",
-        "mq:listBrokers",
-        "mq:describeBroker",
-        "ram:GetResourceShares",
-        "ssm:GetDocument",
-        "ssm:GetParameters",
-        "ssm:ListTagsForResource",
-        "sqs:SendMessage",
-        "elasticmapreduce:ListSecurityConfigurations",
-        "elasticmapreduce:GetBlockPublicAccessConfiguration",
-        "sns:listSubscriptions",
-        "sns:ListTagsForResource",
-        "sns:ListPlatformApplications",
-        "wafv2:ListResourcesForWebACL",
-        "wafv2:ListWebACLs",
-        "wafv2:ListTagsForResource",
-        "wafv2:GetWebACL",
-        "wafv2:GetLoggingConfiguration",
-        "waf:GetWebACL",
-        "waf:ListTagsForResource",
-        "waf:GetLoggingConfiguration",
-        "waf-regional:GetLoggingConfiguration",
-        "waf-regional:ListResourcesForWebACL",
-        "waf-regional:ListTagsForResource",
-        "codebuild:BatchGetProjects",
-        "s3:DescribeJob",
-        "s3:ListJobs",
-        "s3:GetJobTagging",
-        "ssm:GetInventory",
-        "shield:GetSubscriptionState",
-        "storagegateway:DescribeSMBFileShares",
-        "storagegateway:DescribeSMBSettings"
+                    "account:GetAlternateContact",
+                    "apigateway:GET",
+                    "acm-pca:ListTags",
+                    "acm-pca:GetPolicy",
+                    "acm-pca:ListCertificateAuthorities",
+                    "airflow:GetEnvironment",
+                    "airflow:ListEnvironments",
+                    "appstream:DescribeStacks",
+                    "appstream:DescribeUsageReportSubscriptions",
+                    "appstream:DescribeImages",
+                    "appstream:DescribeFleets",
+                    "appstream:ListTagsForResource",
+                    "apprunner:DescribeAutoScalingConfiguration",
+                    "apprunner:ListAutoScalingConfigurations",
+                    "apprunner:ListTagsForResource",
+                    "apprunner:ListServices",
+                    "apprunner:DescribeCustomDomains",
+                    "apprunner:DescribeService",
+                    "appflow:DescribeFlow",
+                    "appflow:ListFlows",
+                    "amplify:ListApps",
+                    "backup:ListBackupVaults",
+                    "backup:ListTags",
+                    "backup:GetBackupVaultAccessPolicy",
+                    "cloudwatch:ListTagsForResource",
+                    "cognito-identity:ListTagsForResource",
+                    "cognito-identity:DescribeIdentityPool",
+                    "cognito-idp:ListTagsForResource",
+                    "codeartifact:ListDomains",
+                    "codeartifact:DescribeDomain",
+                    "codeartifact:GetDomainPermissionsPolicy",
+                    "codeartifact:ListTagsForResource",
+                    "codeartifact:ListRepositories",
+                    "codeartifact:DescribeRepository",
+                    "codeartifact:GetRepositoryPermissionsPolicy",
+                    "connect:ListInstances",
+                    "connect:ListInstanceStorageConfigs",
+                    "connect:ListInstanceAttributes",
+                    "devops-guru:DescribeServiceIntegration",
+                    "ds:ListTagsForResource",
+                    "dynamodb:ListTagsOfResource",
+                    "ec2:GetEbsEncryptionByDefault",
+                    "ec2:SearchTransitGatewayRoutes",
+                    "ecr:DescribeImages",
+                    "ecr:GetRegistryScanningConfiguration",
+                    "ecr:GetLifecyclePolicy",
+                    "ecr:ListTagsForResource",
+                    "ecr-public:ListTagsForResource",
+                    "eks:ListTagsForResource",
+                    "eks:ListFargateProfiles",
+                    "eks:DescribeFargateProfile",
+                    "elasticbeanstalk:ListTagsForResource",
+                    "elasticfilesystem:DescribeTags",
+                    "elasticfilesystem:DescribeFileSystemPolicy",
+                    "elasticache:ListTagsForResource",
+                    "es:ListTags",
+                    "glacier:GetVaultLock",
+                    "glacier:ListTagsForVault",
+                    "glue:GetConnections",
+                    "glue:GetSecurityConfigurations",
+                    "grafana:DescribeWorkspace",
+                    "grafana:DescribeWorkspaceAuthentication",
+                    "grafana:ListWorkspaces",
+                    "kafka:ListClusters",
+                    "kinesisanalytics:ListTagsForResource",
+                    "kinesisanalytics:DescribeApplication",
+                    "lambda:GetFunctionUrlConfig",
+                    "lex:GetBot",
+                    "lex:GetBots",
+                    "lex:GetBotVersions",
+                    "lex:ListTagsForResource",
+                    "lex:ListBotVersions",
+                    "lex:ListBots",
+                    "lex:DescribeBotVersion",
+                    "lex:DescribeBot",
+                    "lakeformation:GetDataLakeSettings",
+                    "logs:GetLogEvents",
+                    "macie2:GetClassificationExportConfiguration",
+                    "macie2:GetMacieSession",
+                    "macie2:GetRevealConfiguration",
+                    "macie2:GetFindingsPublicationConfiguration",
+                    "memorydb:DescribeParameters",
+                    "memorydb:DescribeParameterGroups",
+                    "memorydb:ListTags",
+                    "memorydb:DescribeClusters",
+                    "mq:listBrokers",
+                    "mq:describeBroker",
+                    "mediastore:ListTagsForResource",
+                    "mediastore:GetCorsPolicy",
+                    "mobiletargeting:GetEmailChannel",
+                    "mobiletargeting:GetSmsChannel",
+                    "mobiletargeting:GetApps",
+                    "ram:GetResourceShares",
+                    "ssm:GetDocument",
+                    "ssm:GetParameters",
+                    "ssm:ListTagsForResource",
+                    "transcribe:ListLanguageModels",
+                    "transcribe:ListTagsForResource",
+                    "elasticmapreduce:ListSecurityConfigurations",
+                    "elasticmapreduce:GetBlockPublicAccessConfiguration",
+                    "sns:listSubscriptions",
+                    "sns:ListTagsForResource",
+                    "sns:ListPlatformApplications",
+                    "wafv2:ListResourcesForWebACL",
+                    "wafv2:ListWebACLs",
+                    "wafv2:ListTagsForResource",
+                    "wafv2:GetWebACL",
+                    "wafv2:GetLoggingConfiguration",
+                    "waf:GetWebACL",
+                    "waf:ListTagsForResource",
+                    "waf:GetLoggingConfiguration",
+                    "waf-regional:GetLoggingConfiguration",
+                    "waf-regional:ListResourcesForWebACL",
+                    "waf-regional:ListTagsForResource",
+                    "codebuild:BatchGetProjects",
+                    "s3:DescribeJob",
+                    "s3:ListJobs",
+                    "s3:GetJobTagging",
+                    "ssm:GetInventory",
+                    "shield:GetSubscriptionState",
+                    "states:DescribeStateMachine",
+                    "states:ListTagsForResource",
+                    "storagegateway:DescribeSMBFileShares",
+                    "storagegateway:DescribeSMBSettings",
+                    "translate:GetTerminology",
+                    "qldb:ListLedgers",
+                    "qldb:DescribeLedger",
+                    "qldb:ListTagsForResource"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -123,17 +182,17 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_compute" {
   "Statement": [
     {
       "Action": [
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:BatchGetImage",
-        "ecr:GetAuthorizationToken",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:GetLifecyclePolicyPreview",
-        "secretsmanager:GetSecretValue",
-        "lambda:GetLayerVersion",
-        "ssm:GetParameter",
-        "securityhub:BatchImportFindings",
-        "kms:Decrypt",
-        "lambda:GetFunction"
+                    "ecr:BatchCheckLayerAvailability",
+                    "ecr:BatchGetImage",
+                    "ecr:GetAuthorizationToken",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:GetLifecyclePolicyPreview",
+                    "secretsmanager:GetSecretValue",
+                    "lambda:GetLayerVersion",
+                    "ssm:GetParameter",
+                    "securityhub:BatchImportFindings",
+                    "kms:Decrypt",
+                    "lambda:GetFunction"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -142,6 +201,51 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_compute" {
 }
 EOF
 }
+
+
+resource "aws_iam_policy" "PrismaCloud-ReadOnly-Compute-Policy-EKS-Audit" {
+  name        = "prisma-cloud-iam-read-only-policy-eks-audit"
+  path        = "/"
+  description = ""
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+                {
+                  "Action": [
+                    "logs:StartQuery",
+                    "logs:GetQueryResults"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ]
+            }
+EOF
+}
+
+resource "aws_iam_policy" "PrismaCloud-ReadOnly-Policy-Bridgecrew" {
+  name        = "prisma-cloud-iam-read-only-policy-bridgecrew"
+  path        = "/"
+  description = ""
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+                {
+                  "Action": [
+                    "logs:StartQuery",
+                    "logs:GetQueryResults"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ]
+            }
+EOF
+}
+
+
 
 
 resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy" {
