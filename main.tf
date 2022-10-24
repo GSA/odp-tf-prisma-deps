@@ -221,7 +221,6 @@ resource "aws_iam_policy" "PrismaCloud-ReadOnly-Compute-Policy-EKS-Audit" {
                 }
               ]
             }
-}
 EOF
 }
 
@@ -243,7 +242,6 @@ resource "aws_iam_policy" "PrismaCloud-ReadOnly-Policy-Bridgecrew" {
                 }
               ]
             }
-}
 EOF
 }
 
