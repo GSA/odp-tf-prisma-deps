@@ -150,6 +150,110 @@ EOF
 }
 
 
+resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_all" {
+  name        = "prisma-cloud-iam-read-only-policy-all"
+  path        = "/"
+  description = ""
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RequiredForAwsElasticbeanstalkConfigurationSettingsApiIngestion",
+      "Action": [
+        "airflow:GetEnvironment",
+        "amplify:ListApps",
+        "appflow:DescribeFlow",
+        "appstream:DescribeStacks",
+        "appstream:DescribeUsageReportSubscriptions",
+        "appstream:DescribeImages",
+        "appstream:DescribeFleets",
+        "appstream:ListTagsForResource",
+        "appsync:GetGraphqlApi",
+        "aps:DescribeLoggingConfiguration",
+        "aps:ListWorkspaces",
+        "backup:ListBackupPlans",
+        "backup:GetBackupPlan",
+        "ce:GetCostAndUsage",
+        "chime:GetVoiceConnectorLoggingConfiguration",
+        "cloud9:ListTagsForResource",
+        "cloudhsm:DescribeClusters",
+        "codeartifact:ListTagsForResource",
+        "codeartifact:DescribeRepository",
+        "codeartifact:DescribeDomain",
+        "codeartifact:ListDomains",
+        "codepipeline:ListTagsForResource",
+        "cognito-idp:ListResourcesForWebACL",
+        "comprehendmedical:ListEntitiesDetectionV2Jobs",
+        "connect:ListInstanceAttributes,connect:ListInstanceStorageConfigs",
+        "databrew:DescribeJob,databrew:ListJobs",
+        "devops-guru:DescribeServiceIntegration",
+        "ecr:GetRegistryPolicy",
+        "ecr:DescribeRegistry",
+        "ecr:DescribePullThroughCacheRules",
+        "fms:GetPolicy",
+        "fms:GetAdminAccount",
+        "forecast:DescribePredictor",
+        "forecast:DescribeDataset",
+        "forecast:DescribeAutoPredictor",
+        "forecast:ListTagsForResource",
+        "forecast:ListPredictors",
+        "glue:GetConnection",
+        "grafana:DescribeWorkspace",
+        "grafana:DescribeWorkspaceAuthentication",
+        "identitystore:ListGroupMemberships",
+        "identitystore:ListUsers",
+        "identitystore:ListGroups",
+        "iotanalytics:ListTagsForResource",
+        "iotanalytics:ListDatastores",
+        "iotfleetwise:ListSignalCatalogs",
+        "kendra:ListTagsForResource",
+        "kinesisanalytics:ListTagsForResource",
+        "kinesisanalytics:DescribeApplication",
+        "lakeformation:GetDataLakeSettings",
+        "lambda:GetFunctionUrlConfig",
+        "lex:ListBotVersions",
+        "lex:GetBot",
+        "lex:GetBots",
+        "lex:GetBotVersions",
+        "lex:DescribeBotVersion",
+        "lex:ListTagsForResource",
+        "macie2:GetClassificationExportConfiguration",
+        "macie2:GetMacieSession",
+        "macie2:GetRevealConfiguration",
+        "macie2:GetFindingsPublicationConfiguration",
+        "macie2:ListOrganizationAdminAccounts",
+        "mediastore:ListTagsForResource",
+        "memorydb:DescribeParameters",
+        "memorydb:DescribeParameterGroups",
+        "memorydb:ListTags",
+        "mobiletargeting:GetEmailChannel",
+        "mobiletargeting:GetSmsChannel",
+        "mobiletargeting:GetApps",
+        "opsworks:DescribeUserProfiles",
+        "polly:DescribeVoices",
+        "qldb:ListTagsForResource",
+        "resiliencehub:ListApps",
+        "servicecatalog:ListPortfolios",
+        "servicecatalog:ListApplications",
+        "servicecatalog:ListAttributeGroups",
+        "servicediscovery:ListNamespaces",
+        "states:ListTagsForResource",
+        "storagegateway:DescribeSMBSettings",
+        "storagegateway:DescribeSMBFileShares",
+        "support:DescribeCases",
+        "swf:ListDomains",
+        "translate:GetTerminology"        
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+
 resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_elastic_beanstalk" {
   name        = "prisma-cloud-iam-read-only-policy-elastic-beanstalk"
   path        = "/"
