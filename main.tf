@@ -476,6 +476,11 @@ resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_clou
   policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy_compute.arn
 }
 
+resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy_all" {
+  role       = aws_iam_role.prisma_cloud_iam_role.name
+  policy_arn = aws_iam_policy.prisma_cloud_iam_read_only_policy_all.arn
+}
+
 output "prisma_role_arn" {
   value = aws_iam_role.prisma_cloud_iam_role.arn
 }
