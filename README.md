@@ -2,8 +2,13 @@ It's a terraform module that allows you to create IAM Role for Prisma Tenant to 
 
 ### How to use this module?
 ```
+# Configure teh AWS Provider
+provider "aws" {
+  region = "us-east-1"
+}
+
 module prisma_role {
-  source = "github.com/GSA/odp-tf-prisma-deps.git//terraform"
+  source = "github.com/GSA/odp-tf-prisma-deps.git
   external_id = "qaz-123-xsw-321-cde-456-rfv-654"
   account_id  = "123456789012"
 }
