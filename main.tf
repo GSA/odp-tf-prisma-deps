@@ -12,6 +12,8 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
   "Statement": [
     {
       "Action": [
+	      "access-analyzer:GetAnalyzer",
+        "access-analyzer:ListAnalyzers",
         "account:GetAlternateContact",
         "apigateway:GET",
         "acm-pca:ListTags",
