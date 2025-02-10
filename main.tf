@@ -12,7 +12,7 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
   "Statement": [
     {
       "Action": [
-	      "access-analyzer:GetAnalyzer",
+	"access-analyzer:GetAnalyzer",
         "access-analyzer:ListAnalyzers",
         "account:GetAlternateContact",
         "account:GetContactInformation",
@@ -511,8 +511,8 @@ resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-3" {
 EOF
 }
 
-resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-3" {
-  name        = "prisma-cloud-iam-read-only-policy-3"
+resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-4" {
+  name        = "prisma-cloud-iam-read-only-policy-4"
   path        = "/"
   description = ""
   policy      = <<EOF
@@ -520,7 +520,7 @@ resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-3" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "PrismaCloudConfig3",
+      "Sid": "PrismaCloudConfig4",
       "Action": [
         "firehose:ListDeliveryStreams",
         "firehose:ListTagsForDeliveryStream",
@@ -671,8 +671,8 @@ resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-3" {
 EOF
 }
 
-resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-4" {
-  name        = "prisma-cloud-iam-read-only-policy-4"
+resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-5" {
+  name        = "prisma-cloud-iam-read-only-policy-5"
   path        = "/"
   description = ""
   policy      = <<EOF
@@ -680,7 +680,7 @@ resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-4" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "PrismaCloudConfig4",
+      "Sid": "PrismaCloudConfig5",
       "Action": [
         "mgn:DescribeReplicationConfigurationTemplates",
         "mgn:DescribeSourceServers",
@@ -848,8 +848,8 @@ resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-4" {
 EOF
 }
 
-resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-5" {
-  name        = "prisma-cloud-iam-read-only-policy-5"
+resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-6" {
+  name        = "prisma-cloud-iam-read-only-policy-6"
   path        = "/"
   description = ""
   policy      = <<EOF
@@ -857,7 +857,7 @@ resource "aws_iam_policy" "prisma-cloud-iam-read-only-policy-5" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "PrismaCloudConfig5",
+      "Sid": "PrismaCloudConfig6",
       "Action": [
         "states:ListActivities",
         "states:ListStateMachines",
