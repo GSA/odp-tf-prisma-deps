@@ -1041,24 +1041,17 @@ resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_compute" {
   "Statement": [
     {
       "Action": [
-                    "ecr:GetAuthorizationToken",
-                    "ecr:BatchCheckLayerAvailability",
-                    "ecr:GetDownloadUrlForLayer",
-                    "ecr:GetRepositoryPolicy",
-                    "ecr:DescribeRepositories",
-                    "ecr:ListImages",
-                    "ecr:DescribeImages",
-                    "ecr:BatchGetImage",
-                    "ecr:GetLifecyclePolicy",
-                    "ecr:GetLifecyclePolicyPreview",
-                    "ecr:ListTagsForResource",
-                    "ecr:DescribeImageScanFindings"
-                    "secretsmanager:GetSecretValue",
-                    "lambda:GetLayerVersion",
-                    "ssm:GetParameter",
-                    "securityhub:BatchImportFindings",
-                    "kms:Decrypt",
-                    "lambda:GetFunction"
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetLifecyclePolicyPreview",
+        "secretsmanager:GetSecretValue",
+        "lambda:GetLayerVersion",
+        "ssm:GetParameter",
+        "securityhub:BatchImportFindings",
+        "kms:Decrypt",
+        "lambda:GetFunction"
       ],
       "Effect": "Allow",
       "Resource": "*"
