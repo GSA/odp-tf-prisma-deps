@@ -36,8 +36,8 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
         },
         Action: "sts:AssumeRole",
         Condition: {
-          StringEquals: {
-            sts:ExternalId: "${var.external_id}"
+          "StringEquals": {
+            "sts:ExternalId": var.external_id
           }
         }
       }
