@@ -1,532 +1,1182 @@
+data "aws_partition" "current" {}
+
+data "aws_caller_identity" "current" {}
+
 locals  {
-  role_name = "PrismaCloudAwsOrgMonitoringRole"
-}
-
-resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy" {
-  name        = "prisma-cloud-iam-read-only-policy"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-	"access-analyzer:GetAnalyzer",
-        "access-analyzer:ListAnalyzers",
-        "account:GetAlternateContact",
-        "apigateway:GET",
-        "acm-pca:ListTags",
-        "acm-pca:GetPolicy",
-        "acm-pca:ListCertificateAuthorities",
-        "airflow:GetEnvironment",
-        "airflow:ListEnvironments",
-        "appstream:DescribeStacks",
-        "appstream:DescribeUsageReportSubscriptions",
-        "appstream:DescribeImages",
-        "appstream:DescribeFleets",
-        "appstream:ListTagsForResource",
-        "apprunner:DescribeAutoScalingConfiguration",
-        "apprunner:ListAutoScalingConfigurations",
-        "apprunner:ListTagsForResource",
-        "apprunner:ListServices",
-        "apprunner:DescribeCustomDomains",
-        "apprunner:DescribeService",
-        "appflow:DescribeFlow",
-        "appflow:ListFlows",
-        "amplify:ListApps",
-        "backup:ListBackupVaults",
-        "backup:ListTags",
-        "backup:GetBackupVaultAccessPolicy",
-        "cloudwatch:ListTagsForResource",
-        "cognito-identity:ListTagsForResource",
-        "cognito-identity:DescribeIdentityPool",
-        "cognito-idp:ListTagsForResource",
-        "codeartifact:ListDomains",
-        "codeartifact:DescribeDomain",
-        "codeartifact:GetDomainPermissionsPolicy",
-        "codeartifact:ListTagsForResource",
-        "codeartifact:ListRepositories",
-        "codeartifact:DescribeRepository",
-        "codeartifact:GetRepositoryPermissionsPolicy",
-        "connect:ListInstances",
-        "connect:ListInstanceStorageConfigs",
-        "connect:ListInstanceAttributes",
-        "devops-guru:DescribeServiceIntegration",
-        "ds:ListTagsForResource",
-        "dynamodb:ListTagsOfResource",
-        "ec2:GetEbsEncryptionByDefault",
-        "ec2:SearchTransitGatewayRoutes",
-        "ecr:DescribeImages",
-        "ecr:GetRegistryScanningConfiguration",
-        "ecr:GetLifecyclePolicy",
-        "ecr:ListTagsForResource",
-        "ecr-public:ListTagsForResource",
-        "eks:ListTagsForResource",
-        "eks:ListFargateProfiles",
-        "eks:DescribeFargateProfile",
-        "elasticbeanstalk:ListTagsForResource",
-        "elasticfilesystem:DescribeTags",
-        "elasticfilesystem:DescribeFileSystemPolicy",
-        "elasticache:ListTagsForResource",
-        "es:ListTags",
-        "glacier:GetVaultLock",
-        "glacier:ListTagsForVault",
-        "glue:GetConnections",
-        "glue:GetSecurityConfigurations",
-        "grafana:DescribeWorkspace",
-        "grafana:DescribeWorkspaceAuthentication",
-        "grafana:ListWorkspaces",
-        "kafka:ListClusters",
-        "kinesisanalytics:ListTagsForResource",
-        "kinesisanalytics:DescribeApplication",
-        "lambda:GetFunctionUrlConfig",
-        "lex:GetBot",
-        "lex:GetBots",
-        "lex:GetBotVersions",
-        "lex:ListTagsForResource",
-        "lex:ListBotVersions",
-        "lex:ListBots",
-        "lex:DescribeBotVersion",
-        "lex:DescribeBot",
-        "lakeformation:GetDataLakeSettings",
-        "logs:GetLogEvents",
-        "macie2:GetClassificationExportConfiguration",
-        "macie2:GetMacieSession",
-        "macie2:GetRevealConfiguration",
-        "macie2:GetFindingsPublicationConfiguration",
-        "memorydb:DescribeParameters",
-        "memorydb:DescribeParameterGroups",
-        "memorydb:ListTags",
-        "memorydb:DescribeClusters",
-        "mq:listBrokers",
-        "mq:describeBroker",
-        "mediastore:ListTagsForResource",
-        "mediastore:GetCorsPolicy",
-        "mobiletargeting:GetEmailChannel",
-        "mobiletargeting:GetSmsChannel",
-        "mobiletargeting:GetApps",
-        "ram:GetResourceShares",
-        "ssm:GetDocument",
-        "ssm:GetParameters",
-        "ssm:ListTagsForResource",
-        "transcribe:ListLanguageModels",
-        "transcribe:ListTagsForResource",
-        "elasticmapreduce:ListSecurityConfigurations",
-        "elasticmapreduce:GetBlockPublicAccessConfiguration",
-        "sns:listSubscriptions",
-        "sns:ListTagsForResource",
-        "sns:ListPlatformApplications",
-        "wafv2:ListResourcesForWebACL",
-        "wafv2:ListWebACLs",
-        "wafv2:ListTagsForResource",
-        "wafv2:GetWebACL",
-        "wafv2:GetLoggingConfiguration",
-        "waf:GetWebACL",
-        "waf:ListTagsForResource",
-        "waf:GetLoggingConfiguration",
-        "waf-regional:GetLoggingConfiguration",
-        "waf-regional:ListResourcesForWebACL",
-        "waf-regional:ListTagsForResource",
-        "codebuild:BatchGetProjects",
-        "s3:DescribeJob",
-        "s3:ListJobs",
-        "s3:GetJobTagging",
-        "ssm:GetInventory",
-        "shield:GetSubscriptionState",
-        "states:DescribeStateMachine",
-        "states:ListTagsForResource",
-        "storagegateway:DescribeSMBFileShares",
-        "storagegateway:DescribeSMBSettings",
-        "translate:GetTerminology",
-        "qldb:ListLedgers",
-        "qldb:DescribeLedger",
-        "qldb:ListTagsForResource",
-        "budgets:ViewBudget",
-        "glue:GetCrawler",
-        "detective:ListDatasourcePackages",
-        "imagebuilder:ListImagePipelines",
-        "imagebuilder:GetImagePipeline",
-        "wafv2:GetIPSet",
-        "codepipeline:ListTagsForResource",
-        "imagebuilder:GetImageRecipe",
-        "wafv2:GetRuleGroup",
-        "glue:GetSchema",
-        "wellarchitected:ListWorkloads",
-        "iotanalytics:ListTagsForResource",
-        "mgn:DescribeLaunchConfigurationTemplates",
-        "ec2:GetLaunchTemplateData",
-        "drs:DescribeJobs",
-        "imagebuilder:ListInfrastructureConfigurations",
-        "imagebuilder:GetInfrastructureConfiguration",
-        "waf-regional:GetIPSet",
-        "servicecatalog:ListPortfolios",
-        "codepipeline:ListWebhooks",
-        "account:GetContactInformation",
-        "drs:DescribeSourceServers",
-        "support:DescribeCases",
-        "backup:ListProtectedResources",
-        "ecr:DescribePullThroughCacheRules",
-        "chime:GetVoiceConnectorLoggingConfiguration",
-        "waf-regional:ListIPSets",
-        "macie2:ListOrganizationAdminAccounts",
-        "backup:GetBackupPlan",
-        "comprehendmedical:ListEntitiesDetectionV2Jobs",
-        "backup:ListBackupPlans",
-        "appsync:GetGraphqlApi",
-        "cognito-idp:ListResourcesForWebACL",
-        "fms:GetPolicy",
-        "aps:DescribeLoggingConfiguration",
-        "imagebuilder:ListComponents",
-        "forecast:ListPredictors",
-        "swf:ListDomains",
-        "forecast:DescribeDataset",
-        "databrew:DescribeJob",
-        "batch:DescribeJobQueues",
-        "servicecatalog:ListApplications",
-        "wellarchitected:GetWorkload",
-        "imagebuilder:GetComponent",
-        "iotanalytics:ListDatastores",
-        "waf:GetIPSet",
-        "servicediscovery:ListNamespaces",
-        "ce:GetCostAndUsage",
-        "polly:ListSpeechSynthesisTasks",
-        "imagebuilder:ListImageRecipes",
-        "cloudsearch:ListTags",
-        "cloudhsm:DescribeClusters",
-        "forecast:DescribePredictor",
-        "cloud9:ListTagsForResource",
-        "glue:GetConnection",
-        "resiliencehub:ListApps",
-        "codecommit:GetApprovalRuleTemplate",
-        "glue:ListSchemas",
-        "ssm:GetInventorySchema",
-        "forecast:DescribeAutoPredictor",
-        "auditmanager:GetAssessment",
-        "servicecatalog:ListAttributeGroups",
-        "waf:ListIPSets",
-        "drs:GetReplicationConfiguration",
-        "opsworks:DescribeUserProfiles",
-        "codebuild:ListSourceCredentials",
-        "fms:GetAdminAccount",
-        "polly:DescribeVoices",
-        "iotfleetwise:ListSignalCatalogs",
-        "storagegateway:DescribeChapCredentials",
-        "auditmanager:GetControl",
-        "forecast:ListTagsForResource",
-        "guardduty:DescribeOrganizationConfiguration",
-        "glue:ListCrawlers",
-        "aps:ListWorkspaces"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-
-resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_all" {
-  name        = "prisma-cloud-iam-read-only-policy-all"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "RequiredForAwsElasticbeanstalkConfigurationSettingsApiIngestion",
-      "Action": [
-        "airflow:GetEnvironment",
-        "amplify:ListApps",
-        "appflow:DescribeFlow",
-        "appstream:DescribeStacks",
-        "appstream:DescribeUsageReportSubscriptions",
-        "appstream:DescribeImages",
-        "appstream:DescribeFleets",
-        "appstream:ListTagsForResource",
-        "appsync:GetGraphqlApi",
-        "aps:DescribeLoggingConfiguration",
-        "aps:ListWorkspaces",
-        "backup:ListBackupPlans",
-        "backup:GetBackupPlan",
-        "ce:GetCostAndUsage",
-        "chime:GetVoiceConnectorLoggingConfiguration",
-        "cloud9:ListTagsForResource",
-        "cloudhsm:DescribeClusters",
-        "codeartifact:ListTagsForResource",
-        "codeartifact:DescribeRepository",
-        "codeartifact:DescribeDomain",
-        "codeartifact:ListDomains",
-        "codepipeline:ListTagsForResource",
-        "cognito-idp:ListResourcesForWebACL",
-        "comprehendmedical:ListEntitiesDetectionV2Jobs",
-        "connect:ListInstanceAttributes",
-        "connect:ListInstanceStorageConfigs",
-        "databrew:DescribeJob",
-        "databrew:ListJobs",
-        "devops-guru:DescribeServiceIntegration",
-        "ecr:GetRegistryPolicy",
-        "ecr:DescribeRegistry",
-        "ecr:DescribePullThroughCacheRules",
-        "fms:GetPolicy",
-        "fms:GetAdminAccount",
-        "forecast:DescribePredictor",
-        "forecast:DescribeDataset",
-        "forecast:DescribeAutoPredictor",
-        "forecast:ListTagsForResource",
-        "forecast:ListPredictors",
-        "glue:GetConnection",
-        "grafana:DescribeWorkspace",
-        "grafana:DescribeWorkspaceAuthentication",
-        "identitystore:ListGroupMemberships",
-        "identitystore:ListUsers",
-        "identitystore:ListGroups",
-        "iotanalytics:ListTagsForResource",
-        "iotanalytics:ListDatastores",
-        "iotfleetwise:ListSignalCatalogs",
-        "kendra:ListTagsForResource",
-        "kinesisanalytics:ListTagsForResource",
-        "kinesisanalytics:DescribeApplication",
-        "lakeformation:GetDataLakeSettings",
-        "lambda:GetFunctionUrlConfig",
-        "lex:ListBotVersions",
-        "lex:GetBot",
-        "lex:GetBots",
-        "lex:GetBotVersions",
-        "lex:DescribeBotVersion",
-        "lex:ListTagsForResource",
-        "macie2:GetClassificationExportConfiguration",
-        "macie2:GetMacieSession",
-        "macie2:GetRevealConfiguration",
-        "macie2:GetFindingsPublicationConfiguration",
-        "macie2:ListOrganizationAdminAccounts",
-        "mediastore:ListTagsForResource",
-        "memorydb:DescribeParameters",
-        "memorydb:DescribeParameterGroups",
-        "memorydb:ListTags",
-        "mobiletargeting:GetEmailChannel",
-        "mobiletargeting:GetSmsChannel",
-        "mobiletargeting:GetApps",
-        "opsworks:DescribeUserProfiles",
-        "polly:DescribeVoices",
-        "qldb:ListTagsForResource",
-        "resiliencehub:ListApps",
-        "servicecatalog:ListPortfolios",
-        "servicecatalog:ListApplications",
-        "servicecatalog:ListAttributeGroups",
-        "servicediscovery:ListNamespaces",
-        "states:ListTagsForResource",
-        "storagegateway:DescribeSMBSettings",
-        "storagegateway:DescribeSMBFileShares",
-        "support:DescribeCases",
-        "swf:ListDomains",
-        "translate:GetTerminology"        
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-
-resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_elastic_beanstalk" {
-  name        = "prisma-cloud-iam-read-only-policy-elastic-beanstalk"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "RequiredForAwsElasticbeanstalkConfigurationSettingsApiIngestion",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::elasticbeanstalk-*/*"
-    }
-  ]
-}
-EOF
-}
-
-
-resource "aws_iam_policy" "prisma_cloud_iam_read_only_policy_compute" {
-  name        = "prisma-cloud-iam-read-only-policy-compute"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-                    "ecr:BatchCheckLayerAvailability",
-                    "ecr:BatchGetImage",
-                    "ecr:GetAuthorizationToken",
-                    "ecr:GetDownloadUrlForLayer",
-                    "ecr:GetLifecyclePolicyPreview",
-                    "secretsmanager:GetSecretValue",
-                    "lambda:GetLayerVersion",
-                    "ssm:GetParameter",
-                    "securityhub:BatchImportFindings",
-                    "kms:Decrypt",
-                    "lambda:GetFunction"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-
-resource "aws_iam_policy" "PrismaCloud-ReadOnly-Compute-Policy-EKS-Audit" {
-  name        = "prisma-cloud-iam-read-only-policy-eks-audit"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-                {
-                  "Action": [
-                    "logs:StartQuery",
-                    "logs:GetQueryResults"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": "*"
-                }
-              ]
-            }
-EOF
-}
-
-resource "aws_iam_policy" "PrismaCloud-ReadOnly-Policy-Bridgecrew" {
-  name        = "prisma-cloud-iam-read-only-policy-bridgecrew"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-                {
-                  "Action": [
-                    "logs:StartQuery",
-                    "logs:GetQueryResults"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": "*"
-                }
-              ]
-            }
-EOF
-}
-
-
-
-
-resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy" {
-  name        = "prisma-cloud-iam-remediation-policy"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "cloudtrail:StartLogging",
-        "cloudtrail:UpdateTrail",
-        "ec2:ModifyImageAttribute",
-        "ec2:ModifySnapshotAttribute",
-        "ec2:ModifySubnetAttribute",
-        "ec2:RevokeSecurityGroupEgress",
-        "ec2:RevokeSecurityGroupIngress",
-        "eks:UpdateClusterConfig",
-        "elasticache:ModifyReplicationGroup",
-        "elasticloadbalancing:ModifyLoadBalancerAttributes",
-        "iam:UpdateAccountPasswordPolicy",
-        "kms:EnableKeyRotation",
-        "rds:ModifyDBInstance",
-        "rds:ModifyDBSnapshotAttribute",
-        "rds:ModifyEventSubscription",
-        "redshift:ModifyCluster",
-        "s3:PutBucketAcl",
-        "s3:PutBucketPublicAccessBlock",
-        "s3:PutBucketVersioning"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-
-resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy_compute" {
-  name        = "prisma-cloud-iam-remediation-policy-compute"
-  path        = "/"
-  description = ""
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ec2:AuthorizeSecurityGroupEgress",
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:CreateSecurityGroup",
-        "ec2:CreateTags",
-        "lambda:GetLayerVersion",
-        "lambda:PublishLayerVersion",
-        "lambda:UpdateFunctionConfiguration",
-        "ssm:CreateAssociation"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-
-resource "aws_iam_role" "prisma_cloud_iam_role" {
-  name               = local.role_name
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::${var.account_id}:root"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "StringEquals": {
-          "sts:ExternalId": "${var.external_id}"
-        }
+  mappings = {
+    EventBridgeMap = {
+      EventBridgeRuleNamePrefix = {
+        Value = "prisma-cloud-eb-a-*"
       }
     }
+  }
+}
+
+resource "aws_iam_role" "prisma_cloud_iam_role" {
+  name                = var.prisma_cloud_role_name
+  managed_policy_arns = [
+    join("", ["arn:aws:iam::aws:policy/SecurityAudit"]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_1", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_2", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_3", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_4", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_5", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_6", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma-cloud-iam-remediation-policy", "-", var.prisma_cloud_role_name]),
+    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma-cloud-iam-remediation-policy-compute", "-", var.prisma_cloud_role_name])
   ]
-}
-EOF
+  max_session_duration = 43200
+  assume_role_policy   = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Effect: "Allow",
+        Principal: {
+          AWS: "arn:aws:iam::${var.account_id}:root"
+        },
+        Action: "sts:AssumeRole",
+        Condition: {
+          StringEquals: {
+            sts:ExternalId: "${var.external_id}"
+          }
+        }
+      }
+    ]
+  }
 }
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_aws_managed_security_audit_policy" {
-  role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
+resource "aws_iam_policy" "prismacloud1" {
+  name        = join("", ["prisma_cloud_1", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudFlowlogs1",
+        Action: [
+          "logs:GetLogEvents"
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      },
+      {
+        Sid: "PrismaCloudAuditEventsCloudTrail1",
+        Action: [
+          "cloudtrail:LookupEvents"
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      },
+      {
+        Sid: "RequiredForAwsElasticbeanstalkConfigurationSettingsApiIngestion"
+        Action: [
+          "s3:GetObject"
+        ],
+        Effect: "Allow",
+        Resource: join("", ["arn:", data.aws_partition.current.partition, ":s3:::elasticbeanstalk-*/*"])
+      },
+      {
+        Sid: "PrismaCloudGuardduty1",
+        Action: [
+          "guardduty:GetDetector",
+          "guardduty:GetFindings",
+          "guardduty:ListDetectors",
+          "guardduty:ListFindings"
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      },
+      {
+        Sid: "PrismaCloudEBRuleStatusPermissions2",
+        Action: [
+          "cloudtrail:DescribeTrails",
+          "cloudtrail:GetEventSelectors",
+          "cloudtrail:GetTrailStatus",
+          "ec2:DescribeRegions",
+          "events:DescribeApiDestination",
+          "events:DescribeConnection",
+          "events:DescribeRule",
+          "events:ListTargetsByRule"          
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      },
+      {
+        Sid: "PrismaCloudInspector1",
+        Effect: "Allow",
+        Action: [
+          "inspector:DescribeAssessmentTemplates",
+          "inspector:DescribeFindings",
+          "inspector:DescribeRulesPackages",
+          "inspector:ListAssessmentRunAgents",
+          "inspector:ListAssessmentRuns",
+          "inspector:ListAssessmentTemplates",
+          "inspector:ListFindings",
+          "inspector:ListRulesPackages"
+        ],
+        Resource: "*"
+      },
+      {
+        Sid: "PrismaCloudEBRuleManagementPermissions1",
+        Effect: "Allow",
+        Action: [
+          "events:DeleteRule",
+          "events:DisableRule",
+          "events:EnableRule",
+          "events:PutRule",
+          "events:RemoveTargets"
+        ],
+        Resource: [
+          join("",["arn:", data.aws_partition.current.aws_partition, ":events:*:", data.aws_caller_identity.current.account_id, ":rule/", local.mappings["EventBridgeMap"]["EventBridgeRuleNamePrefix"]["Value"]])
+        ]
+      },
+      {
+        Sid: "PrismaCloudBridgecrew1",
+        Effect: "Allow",
+        Action: [
+          "cloudformation:DescribeStackResources",
+          "cloudformation:GetTemplate",
+          "cloudformation:ListStacks",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:BatchGetRepositoryScanningConfiguration",
+          "ecr:DescribeImageReplicationStatus",
+          "ecr:DescribeImageScanFindings",
+          "ecr:DescribePullThroughCacheRules",
+          "ecr:DescribeRegistry",
+          "ecr:GetAuthorizationToken",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:GetRegistryPolicy",
+          "ecr:ListImages",
+          "lambda:GetEventSourceMapping",
+          "lambda:GetFunction",
+          "lambda:GetLayerVersion",
+          "s3:ListBucket",
+          "sns:GetSubscriptionAttributes"
+        ],
+        Resource: "*"
+      }
+    ]
+  }
 }
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy" {
+resource "aws_iam_policy" "prismacloud2" {
+  name        = join("", ["prisma_cloud_2", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig5",
+        Action: [
+          "servicecatalog:DescribePortfolioShares",
+          "servicecatalog:ListApplications",
+          "servicecatalog:ListAttributeGroups",
+          "servicecatalog:ListPortfolios",
+          "servicecatalog:ListPrincipalsForPortfolio",
+          "servicecatalog:SearchProducts",
+          "servicecatalog:SearchProductsAsAdmin",
+          "servicediscovery:ListNamespaces",
+          "ses:DescribeConfigurationSet",
+          "ses:DescribeReceiptRuleSet",
+          "ses:GetIdentityDkimAttributes",
+          "ses:GetIdentityPolicies",
+          "ses:GetIdentityVerificationAttributes",
+          "ses:GetTemplate",
+          "ses:ListConfigurationSets",
+          "ses:ListIdentities",
+          "ses:ListIdentityPolicies",
+          "ses:ListReceiptRuleSets",
+          "ses:ListTemplates",
+          "shield:DescribeDRTAccess",
+          "shield:GetSubscriptionState",
+          "shield:ListProtectionGroups",
+          "shield:ListProtections",
+          "shield:ListResourcesInProtectionGroup",
+          "shield:ListTagsForResource",
+          "signer:DescribeSigningJob",
+          "signer:ListSigningJobs",
+          "sns:GetDataProtectionPolicy",
+          "sns:GetTopicAttributes",
+          "sns:ListPlatformApplications",
+          "sns:ListSubscriptions",
+          "sns:ListTagsForResource",
+          "sns:ListTopics",
+          "sqs:GetQueueAttributes",
+          "sqs:ListQueueTags",
+          "sqs:ListQueues",
+          "ssm:DescribeActivations",
+          "ssm:DescribeAssociation",
+          "ssm:DescribeDocument",
+          "ssm:DescribeDocumentPermission",
+          "ssm:DescribeInstanceInformation",
+          "ssm:DescribeParameters",
+          "ssm:DescribePatchBaselines",
+          "ssm:DescribeSessions",
+          "ssm:GetDocument",
+          "ssm:GetInventory",
+          "ssm:GetInventorySchema",
+          "ssm:GetParameters",
+          "ssm:GetPatchBaseline",
+          "ssm:GetServiceSetting",
+          "ssm:ListAssociations",
+          "ssm:ListDocuments",
+          "ssm:ListInventoryEntries",
+          "ssm:ListResourceComplianceSummaries",
+          "ssm:ListTagsForResource",
+          "sso:DescribeApplication",
+          "sso:DescribePermissionSet",
+          "sso:DescribePermissionSetProvisioningStatus",
+          "sso:ListAccountAssignments",
+          "sso:ListAccountsForProvisionedPermissionSet",
+          "sso:ListApplicationAssignments",
+          "sso:ListApplications",
+          "sso:ListInstances",
+          "sso:ListPermissionSetProvisioningStatus",
+          "sso:ListPermissionSets",
+          "states:DescribeStateMachine",
+          "states:ListActivities",
+          "states:ListStateMachines",
+          "states:ListTagsForResource",
+          "storagegateway:DescribeCachediSCSIVolumes",
+          "storagegateway:DescribeChapCredentials",
+          "storagegateway:DescribeGatewayInformation",
+          "storagegateway:DescribeNFSFileShares",
+          "storagegateway:DescribeSMBFileShares",
+          "storagegateway:DescribeSMBSettings",
+          "storagegateway:DescribeTapes",
+          "storagegateway:ListFileShares",
+          "storagegateway:ListGateways",
+          "storagegateway:ListTapes",
+          "storagegateway:ListVolumes",
+          "support:DescribeCases",
+          "swf:ListDomains",
+          "synthetics:DescribeCanaries",
+          "tag:DescribeReportCreation",
+          "tag:GetComplianceSummary",
+          "transcribe:GetTranscriptionJob",
+          "transcribe:ListLanguageModels",
+          "transcribe:ListTagsForResource",
+          "transcribe:ListTranscriptionJobs",
+          "transfer:DescribeAccess",
+          "transfer:DescribeSecurityPolicy",
+          "transfer:DescribeServer",
+          "transfer:DescribeUser",
+          "transfer:ListAccesses",
+          "transfer:ListServers",
+          "transfer:ListUsers",
+          "translate:DescribeTextTranslationJob",
+          "translate:GetTerminology",
+          "translate:ListTerminologies",
+          "translate:ListTextTranslationJobs",
+          "vpc-lattice:GetListener",
+          "vpc-lattice:GetService",
+          "vpc-lattice:GetServiceNetwork",
+          "vpc-lattice:GetTargetGroup",
+          "vpc-lattice:ListListeners",
+          "vpc-lattice:ListServiceNetworkServiceAssociations",
+          "vpc-lattice:ListServiceNetworkVpcAssociations",
+          "vpc-lattice:ListServiceNetworks",
+          "vpc-lattice:ListServices",
+          "vpc-lattice:ListTagsForResource",
+          "vpc-lattice:ListTargetGroups",
+          "waf-regional:GetIPSet",
+          "waf-regional:GetLoggingConfiguration",
+          "waf-regional:GetWebACL",
+          "waf-regional:ListIPSets",
+          "waf-regional:ListResourcesForWebACL",
+          "waf-regional:ListTagsForResource",
+          "waf-regional:ListWebACLs",
+          "waf:GetIPSet",
+          "waf:GetLoggingConfiguration",
+          "waf:GetWebACL",
+          "waf:ListIPSets",
+          "waf:ListTagsForResource",
+          "waf:ListWebACLs",
+          "wafv2:GetIPSet",
+          "wafv2:GetLoggingConfiguration",
+          "wafv2:GetRuleGroup",
+          "wafv2:GetWebACL",
+          "wafv2:ListIPSets",
+          "wafv2:ListResourcesForWebACL",
+          "wafv2:ListRuleGroups",
+          "wafv2:ListTagsForResource",
+          "wafv2:ListWebACLs",
+          "wellarchitected:GetWorkload",
+          "wellarchitected:ListWorkloads",
+          "workspaces:DescribeIpGroups",
+          "workspaces:DescribeTags",
+          "workspaces:DescribeWorkspaceBundles",
+          "workspaces:DescribeWorkspaceDirectories",
+          "workspaces:DescribeWorkspaces",
+          "xray:GetEncryptionConfig"          
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}   
+
+resource "aws_iam_policy" "prismacloud3" {
+  name        = join("", ["prisma_cloud_3", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig1",
+        Action: [
+          "access-analyzer:GetAnalyzer",
+          "access-analyzer:ListAnalyzers",
+          "account:GetAlternateContact",
+          "account:GetContactInformation",
+          "acm-pca:GetPolicy",
+          "acm-pca:ListCertificateAuthorities",
+          "acm-pca:ListTags",
+          "acm:DescribeCertificate",
+          "acm:ListCertificates",
+          "acm:ListTagsForCertificate",
+          "airflow:GetEnvironment",
+          "airflow:ListEnvironments",
+          "amplify:ListApps",
+          "aoss:BatchGetCollection",
+          "aoss:ListCollections",
+          "aoss:ListSecurityConfigs",
+          "aoss:ListTagsForResource",
+          "apigateway:GET",
+          "appconfig:ListApplications",
+          "appconfig:ListConfigurationProfiles",
+          "appconfig:ListEnvironments",
+          "appflow:DescribeFlow",
+          "appflow:ListFlows",
+          "application-autoscaling:DescribeScalingPolicies",
+          "appmesh:DescribeMesh",
+          "appmesh:DescribeVirtualGateway",
+          "appmesh:ListMeshes",
+          "appmesh:ListTagsForResource",
+          "appmesh:ListVirtualGateways",
+          "apprunner:DescribeAutoScalingConfiguration",
+          "apprunner:DescribeCustomDomains",
+          "apprunner:DescribeService",
+          "apprunner:ListAutoScalingConfigurations",
+          "apprunner:ListServices",
+          "apprunner:ListTagsForResource",
+          "appstream:DescribeFleets",
+          "appstream:DescribeImageBuilders",
+          "appstream:DescribeImages",
+          "appstream:DescribeStacks",
+          "appstream:DescribeUsageReportSubscriptions",
+          "appstream:ListTagsForResource",
+          "appsync:GetGraphqlApi",
+          "appsync:ListGraphqlApis",
+          "aps:DescribeLoggingConfiguration",
+          "aps:ListWorkspaces",
+          "athena:GetWorkGroup",
+          "athena:ListDataCatalogs",
+          "athena:ListDatabases",
+          "athena:ListTableMetadata",
+          "athena:ListWorkGroups",
+          "auditmanager:GetAssessment",
+          "auditmanager:GetControl",
+          "auditmanager:ListAssessments",
+          "auditmanager:ListControls",
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribeLaunchConfigurations",
+          "backup:GetBackupPlan",
+          "backup:GetBackupVaultAccessPolicy",
+          "backup:ListBackupPlans",
+          "backup:ListBackupVaults",
+          "backup:ListProtectedResources",
+          "backup:ListTags",
+          "batch:DescribeComputeEnvironments",
+          "batch:DescribeJobDefinitions",
+          "batch:DescribeJobQueues",
+          "bedrock:GetAgent",
+          "bedrock:GetCustomModel",
+          "bedrock:GetFoundationModel",
+          "bedrock:GetKnowledgeBase",
+          "bedrock:GetModelCustomizationJob",
+          "bedrock:GetModelInvocationLoggingConfiguration",
+          "bedrock:GetProvisionedModelThroughput",
+          "bedrock:ListAgents",
+          "bedrock:ListCustomModels",
+          "bedrock:ListFoundationModels",
+          "bedrock:ListKnowledgeBases",
+          "bedrock:ListModelCustomizationJobs",
+          "bedrock:ListProvisionedModelThroughputs",
+          "bedrock:ListTagsForResource",
+          "budgets:ViewBudget",
+          "ce:GetCostAndUsage",
+          "chime:GetVoiceConnectorLoggingConfiguration",
+          "chime:ListVoiceConnectors",
+          "cloud9:DescribeEnvironmentMemberships",
+          "cloud9:DescribeEnvironments",
+          "cloud9:ListEnvironments",
+          "cloud9:ListTagsForResource",
+          "cloudformation:DescribeStackResources",
+          "cloudformation:DescribeStacks",
+          "cloudformation:GetStackPolicy",
+          "cloudformation:GetTemplate",
+          "cloudformation:ListStackResources",
+          "cloudformation:ListStacks",
+          "cloudfront:GetDistribution",
+          "cloudfront:GetDistributionConfig",
+          "cloudfront:GetResponseHeadersPolicy",
+          "cloudfront:ListDistributions",
+          "cloudfront:ListDistributionsByWebACLId",
+          "cloudfront:ListOriginAccessControls",
+          "cloudfront:ListResponseHeadersPolicies",
+          "cloudfront:ListTagsForResource",
+          "cloudhsm:DescribeClusters",
+          "cloudsearch:DescribeDomains",
+          "cloudsearch:ListTags",
+          "cloudtrail:DescribeTrails",
+          "cloudtrail:GetEventSelectors",
+          "cloudtrail:GetTrailStatus",
+          "cloudtrail:ListTags",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:DescribeInsightRules",
+          "cloudwatch:ListTagsForResource",
+          "codeartifact:DescribeDomain",
+          "codeartifact:DescribeRepository",
+          "codeartifact:GetDomainPermissionsPolicy",
+          "codeartifact:GetRepositoryPermissionsPolicy",
+          "codeartifact:ListDomains",
+          "codeartifact:ListRepositories",
+          "codeartifact:ListTagsForResource",
+          "codebuild:BatchGetProjects",
+          "codebuild:ListProjects",
+          "codebuild:ListSourceCredentials",
+          "codecommit:GetApprovalRuleTemplate",
+          "codecommit:GetRepository",
+          "codecommit:ListApprovalRuleTemplates",
+          "codecommit:ListRepositories",
+          "codedeploy:BatchGetDeploymentTargets",
+          "codedeploy:ListDeploymentTargets",
+          "codedeploy:ListDeployments",
+          "codepipeline:GetPipeline",
+          "codepipeline:ListPipelines",
+          "codepipeline:ListTagsForResource",
+          "codepipeline:ListWebhooks",
+          "cognito-identity:DescribeIdentityPool",
+          "cognito-identity:ListIdentityPools",
+          "cognito-identity:ListTagsForResource",
+          "cognito-idp:DescribeRiskConfiguration",
+          "cognito-idp:DescribeUserPool",
+          "cognito-idp:DescribeUserPoolClient",
+          "cognito-idp:GetGroup",
+          "cognito-idp:ListGroups",
+          "cognito-idp:ListResourcesForWebACL",
+          "cognito-idp:ListTagsForResource",
+          "cognito-idp:ListUserPoolClients",
+          "cognito-idp:ListUserPools",
+          "cognito-idp:ListUsers",
+          "cognito-sync:ListIdentityPoolUsage",
+          "comprehend:DescribeFlywheel",
+          "comprehend:ListDocumentClassifierSummaries",
+          "comprehend:ListDocumentClassifiers",
+          "comprehend:ListEntitiesDetectionJobs",
+          "comprehend:ListFlywheels",
+          "comprehend:ListKeyPhrasesDetectionJobs",
+          "comprehend:ListPiiEntitiesDetectionJobs",
+          "comprehend:ListSentimentDetectionJobs",
+          "comprehend:ListTagsForResource",
+          "comprehend:ListTargetedSentimentDetectionJobs",
+          "comprehendmedical:ListEntitiesDetectionV2Jobs",
+          "config:DescribeConfigRules",
+          "config:DescribeConfigurationAggregators",
+          "config:DescribeConfigurationRecorderStatus",
+          "config:DescribeConfigurationRecorders",
+          "config:DescribeDeliveryChannels",
+          "config:GetComplianceDetailsByConfigRule",
+          "config:ListTagsForResource",
+          "connect-campaigns:DescribeCampaign",
+          "connect-campaigns:ListCampaigns",
+          "connect:ListInstanceAttributes",
+          "connect:ListInstanceStorageConfigs",
+          "connect:ListInstances",
+          "controltower:GetLandingZone",
+          "controltower:ListLandingZones",
+          "controltower:ListTagsForResource",
+          "databrew:DescribeJob",
+          "databrew:DescribeProject",
+          "databrew:ListJobs",
+          "databrew:ListProjects"          
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}
+
+resource "aws_iam_policy" "prismacloud4" {
+  name        = join("", ["prisma_cloud_4", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig4",
+        Action: [
+          "lambda:GetLayerVersionPolicy",
+          "lambda:GetPolicy",
+          "lambda:ListCodeSigningConfigs",
+          "lambda:ListEventSourceMappings",
+          "lambda:ListFunctions",
+          "lambda:ListLayerVersions",
+          "lambda:ListLayers",
+          "lambda:ListTags",
+          "lex:DescribeBot",
+          "lex:DescribeBotVersion",
+          "lex:GetBot",
+          "lex:GetBotVersions",
+          "lex:GetBots",
+          "lex:ListBotVersions",
+          "lex:ListBots",
+          "lex:ListTagsForResource",
+          "lightsail:GetBuckets",
+          "lightsail:GetContainerServices",
+          "lightsail:GetDisks",
+          "lightsail:GetInstances",
+          "lightsail:GetKeyPairs",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:DescribeMetricFilters",
+          "logs:DescribeSubscriptionFilters",
+          "logs:GetLogDelivery",
+          "logs:GetLogEvents",
+          "logs:ListLogDeliveries",
+          "logs:ListTagsLogGroup",
+          "lookoutequipment:ListDatasets",
+          "lookoutmetrics:ListAnomalyDetectors",
+          "lookoutvision:ListProjects",
+          "macie2:GetClassificationExportConfiguration",
+          "macie2:GetFindingsPublicationConfiguration",
+          "macie2:GetMacieSession",
+          "macie2:GetRevealConfiguration",
+          "macie2:ListClassificationJobs",
+          "macie2:ListOrganizationAdminAccounts",
+          "managedblockchain:ListNetworks",
+          "mediastore:DescribeContainer",
+          "mediastore:GetContainerPolicy",
+          "mediastore:GetCorsPolicy",
+          "mediastore:ListContainers",
+          "mediastore:ListTagsForResource",
+          "memorydb:DescribeClusters",
+          "memorydb:DescribeParameterGroups",
+          "memorydb:DescribeParameters",
+          "memorydb:DescribeSnapshots",
+          "memorydb:DescribeSubnetGroups",
+          "memorydb:ListTags",
+          "mgh:DescribeHomeRegionControls",
+          "mgn:DescribeLaunchConfigurationTemplates",
+          "mgn:DescribeReplicationConfigurationTemplates",
+          "mgn:DescribeSourceServers",
+          "mobiletargeting:GetApps",
+          "mobiletargeting:GetEmailChannel",
+          "mobiletargeting:GetSmsChannel",
+          "mq:DescribeBroker",
+          "mq:ListBrokers",
+          "network-firewall:DescribeFirewall",
+          "network-firewall:DescribeFirewallPolicy",
+          "network-firewall:DescribeLoggingConfiguration",
+          "network-firewall:DescribeResourcePolicy",
+          "network-firewall:ListFirewallPolicies",
+          "network-firewall:ListFirewalls",
+          "network-firewall:ListRuleGroups",
+          "networkmanager:DescribeGlobalNetworks",
+          "networkmanager:GetCoreNetwork",
+          "networkmanager:GetDevices",
+          "networkmanager:GetSites",
+          "networkmanager:ListCoreNetworks",
+          "opsworks:DescribeUserProfiles",
+          "organizations:DescribeAccount",
+          "organizations:DescribeOrganization",
+          "personalize:ListDatasetImportJobs",
+          "polly:DescribeVoices",
+          "polly:ListSpeechSynthesisTasks",
+          "qldb:DescribeLedger",
+          "qldb:ListLedgers",
+          "qldb:ListTagsForResource",
+          "quicksight:DescribeAccountSettings",
+          "quicksight:DescribeIpRestriction",
+          "quicksight:ListDataSets",
+          "quicksight:ListDataSources",
+          "quicksight:ListTagsForResource",
+          "ram:GetResourceShares",
+          "ram:ListPrincipals",
+          "ram:ListResources",
+          "rbin:GetRule",
+          "rbin:ListRules",
+          "rbin:ListTagsForResource",
+          "rds:DescribeDBClusterParameterGroups",
+          "rds:DescribeDBClusterParameters",
+          "rds:DescribeDBClusterSnapshotAttributes",
+          "rds:DescribeDBClusterSnapshots",
+          "rds:DescribeDBClusters",
+          "rds:DescribeDBInstances",
+          "rds:DescribeDBParameterGroups",
+          "rds:DescribeDBParameters",
+          "rds:DescribeDBSnapshotAttributes",
+          "rds:DescribeDBSnapshots",
+          "rds:DescribeEventSubscriptions",
+          "rds:DescribeOptionGroups",
+          "rds:ListTagsForResource",
+          "redshift-serverless:ListWorkgroups",
+          "redshift:DescribeClusterParameters",
+          "redshift:DescribeClusters",
+          "redshift:DescribeLoggingStatus",
+          "resiliencehub:ListApps",
+          "route53:GetDNSSEC",
+          "route53:GetHealthCheck",
+          "route53:ListHealthChecks",
+          "route53:ListHostedZones",
+          "route53:ListQueryLoggingConfigs",
+          "route53:ListResourceRecordSets",
+          "route53:ListTagsForResource",
+          "route53domains:GetDomainDetail",
+          "route53domains:ListDomains",
+          "route53domains:ListTagsForDomain",
+          "route53resolver:ListResolverEndpoints",
+          "route53resolver:ListResolverQueryLogConfigAssociations",
+          "route53resolver:ListResolverQueryLogConfigs",
+          "route53resolver:ListTagsForResource",
+          "s3:DescribeJob",
+          "s3:GetAccelerateConfiguration",
+          "s3:GetAccessPoint",
+          "s3:GetAccessPointPolicy",
+          "s3:GetAccessPointPolicyStatus",
+          "s3:GetAccountPublicAccessBlock",
+          "s3:GetAnalyticsConfiguration",
+          "s3:GetBucketAcl",
+          "s3:GetBucketCORS",
+          "s3:GetBucketLocation",
+          "s3:GetBucketLogging",
+          "s3:GetBucketObjectLockConfiguration",
+          "s3:GetBucketOwnershipControls",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketPolicyStatus",
+          "s3:GetBucketPublicAccessBlock",
+          "s3:GetBucketTagging",
+          "s3:GetBucketVersioning",
+          "s3:GetBucketWebsite",
+          "s3:GetEncryptionConfiguration",
+          "s3:GetJobTagging",
+          "s3:GetLifecycleConfiguration",
+          "s3:GetReplicationConfiguration",
+          "s3:ListAccessPoints",
+          "s3:ListAllMyBuckets",
+          "s3:ListJobs",
+          "s3:ListMultiRegionAccessPoints",
+          "sagemaker:DescribeCodeRepository",
+          "sagemaker:DescribeDomain",
+          "sagemaker:DescribeEndpoint",
+          "sagemaker:DescribeEndpointConfig",
+          "sagemaker:DescribeLabelingJob",
+          "sagemaker:DescribeModel",
+          "sagemaker:DescribeNotebookInstance",
+          "sagemaker:DescribeNotebookInstanceLifecycleConfig",
+          "sagemaker:DescribeProcessingJob",
+          "sagemaker:DescribeStudioLifecycleConfig",
+          "sagemaker:DescribeTrainingJob",
+          "sagemaker:DescribeUserProfile",
+          "sagemaker:ListCodeRepositories",
+          "sagemaker:ListDomains",
+          "sagemaker:ListEndpointConfigs",
+          "sagemaker:ListEndpoints",
+          "sagemaker:ListLabelingJobs",
+          "sagemaker:ListModels",
+          "sagemaker:ListNotebookInstanceLifecycleConfigs",
+          "sagemaker:ListNotebookInstances",
+          "sagemaker:ListProcessingJobs",
+          "sagemaker:ListStudioLifecycleConfigs",
+          "sagemaker:ListTags",
+          "sagemaker:ListTrainingJobs",
+          "sagemaker:ListUserProfiles",
+          "scheduler:GetSchedule",
+          "scheduler:ListSchedules",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:ListSecrets",
+          "securityhub:DescribeHub",
+          "securityhub:DescribeStandards",
+          "securityhub:GetEnabledStandards",
+          "securityhub:ListEnabledProductsForImport",
+          "serverlessrepo:GetApplicationPolicy",
+          "serverlessrepo:ListApplications"         
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}
+
+resource "aws_iam_policy" "prismacloud5" {
+  name        = join("", ["prisma_cloud_5", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig2",
+        Action: [
+          "datapipeline:DescribePipelines",
+          "datapipeline:GetPipelineDefinition",
+          "datapipeline:ListPipelines",
+          "datasync:DescribeAgent",
+          "datasync:DescribeLocationEfs",
+          "datasync:DescribeLocationFsxLustre",
+          "datasync:DescribeLocationFsxOntap",
+          "datasync:DescribeLocationFsxOpenZfs",
+          "datasync:DescribeLocationFsxWindows",
+          "datasync:DescribeLocationHdfs",
+          "datasync:DescribeLocationNfs",
+          "datasync:DescribeLocationObjectStorage",
+          "datasync:DescribeLocationS3",
+          "datasync:DescribeLocationSmb",
+          "datasync:DescribeTask",
+          "datasync:DescribeTaskExecution",
+          "datasync:ListAgents",
+          "datasync:ListLocations",
+          "datasync:ListTagsForResource",
+          "datasync:ListTaskExecutions",
+          "datasync:ListTasks",
+          "datazone:GetDataSource",
+          "datazone:GetDomain",
+          "datazone:ListDataSources",
+          "datazone:ListDomains",
+          "datazone:ListProjects",
+          "dax:DescribeClusters",
+          "dax:DescribeParameterGroups",
+          "dax:DescribeParameters",
+          "dax:ListTags",
+          "detective:ListDatasourcePackages",
+          "detective:ListGraphs",
+          "devicefarm:ListProjects",
+          "devops-guru:DescribeServiceIntegration",
+          "directconnect:DescribeConnections",
+          "directconnect:DescribeDirectConnectGateways",
+          "directconnect:DescribeVirtualInterfaces",
+          "dlm:GetLifecyclePolicies",
+          "dlm:GetLifecyclePolicy",
+          "dms:DescribeCertificates",
+          "dms:DescribeEndpoints",
+          "dms:DescribeReplicationInstances",
+          "dms:DescribeReplicationTasks",
+          "dms:ListTagsForResource",
+          "drs:DescribeJobs",
+          "drs:DescribeSourceNetworks",
+          "drs:DescribeSourceServers",
+          "drs:GetReplicationConfiguration",
+          "ds:DescribeDirectories",
+          "ds:DescribeTrusts",
+          "ds:ListTagsForResource",
+          "dynamodb:DescribeBackup",
+          "dynamodb:DescribeContinuousBackups",
+          "dynamodb:DescribeGlobalTable",
+          "dynamodb:DescribeTable",
+          "dynamodb:DescribeTimeToLive",
+          "dynamodb:GetResourcePolicy",
+          "dynamodb:ListBackups",
+          "dynamodb:ListGlobalTables",
+          "dynamodb:ListTables",
+          "dynamodb:ListTagsOfResource",
+          "ec2:DescribeAccountAttributes",
+          "ec2:DescribeAddresses",
+          "ec2:DescribeClientVpnAuthorizationRules",
+          "ec2:DescribeClientVpnEndpoints",
+          "ec2:DescribeCustomerGateways",
+          "ec2:DescribeDhcpOptions",
+          "ec2:DescribeEgressOnlyInternetGateways",
+          "ec2:DescribeFlowLogs",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceAttribute",
+          "ec2:DescribeInstanceStatus",
+          "ec2:DescribeInstances",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeIpams",
+          "ec2:DescribeKeyPairs",
+          "ec2:DescribeManagedPrefixLists",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeNetworkAcls",
+          "ec2:DescribeNetworkInsightsAnalyses",
+          "ec2:DescribeNetworkInterfaceAttribute",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DescribeRegions",
+          "ec2:DescribeReservedInstances",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSnapshotAttribute",
+          "ec2:DescribeSnapshots",
+          "ec2:DescribeSpotFleetRequests",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeTags",
+          "ec2:DescribeTrafficMirrorSessions",
+          "ec2:DescribeTransitGatewayAttachments",
+          "ec2:DescribeTransitGatewayRouteTables",
+          "ec2:DescribeTransitGatewayVpcAttachments",
+          "ec2:DescribeTransitGateways",
+          "ec2:DescribeVolumes",
+          "ec2:DescribeVpcEndpointConnectionNotifications",
+          "ec2:DescribeVpcEndpointServiceConfigurations",
+          "ec2:DescribeVpcEndpointServicePermissions",
+          "ec2:DescribeVpcEndpointServices",
+          "ec2:DescribeVpcEndpoints",
+          "ec2:DescribeVpcPeeringConnections",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeVpnConnections",
+          "ec2:DescribeVpnGateways",
+          "ec2:GetEbsEncryptionByDefault",
+          "ec2:GetLaunchTemplateData",
+          "ec2:GetManagedPrefixListEntries",
+          "ec2:GetSerialConsoleAccessStatus",
+          "ec2:SearchTransitGatewayRoutes",
+          "ecr-public:DescribeRegistries",
+          "ecr-public:DescribeRepositories",
+          "ecr-public:GetRegistryCatalogData",
+          "ecr-public:GetRepositoryCatalogData",
+          "ecr-public:GetRepositoryPolicy",
+          "ecr-public:ListTagsForResource",
+          "ecr:DescribeImages",
+          "ecr:DescribePullThroughCacheRules",
+          "ecr:DescribeRegistry",
+          "ecr:DescribeRepositories",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetRegistryPolicy",
+          "ecr:GetRegistryScanningConfiguration",
+          "ecr:GetRepositoryPolicy",
+          "ecr:ListTagsForResource",
+          "ecs:DescribeClusters",
+          "ecs:DescribeContainerInstances",
+          "ecs:DescribeServices",
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTasks",
+          "ecs:ListClusters",
+          "ecs:ListContainerInstances",
+          "ecs:ListServices",
+          "ecs:ListTagsForResource",
+          "ecs:ListTaskDefinitions",
+          "ecs:ListTasks",
+          "eks:DescribeCluster",
+          "eks:DescribeFargateProfile",
+          "eks:DescribeNodegroup",
+          "eks:ListClusters",
+          "eks:ListFargateProfiles",
+          "eks:ListNodegroups",
+          "eks:ListTagsForResource",
+          "elasticache:DescribeCacheClusters",
+          "elasticache:DescribeCacheEngineVersions",
+          "elasticache:DescribeCacheSubnetGroups",
+          "elasticache:DescribeReplicationGroups",
+          "elasticache:DescribeReservedCacheNodes",
+          "elasticache:DescribeServerlessCaches",
+          "elasticache:DescribeSnapshots",
+          "elasticache:DescribeUsers",
+          "elasticache:ListTagsForResource",
+          "elasticbeanstalk:DescribeApplications",
+          "elasticbeanstalk:DescribeConfigurationSettings",
+          "elasticbeanstalk:DescribeEnvironmentResources",
+          "elasticbeanstalk:DescribeEnvironments",
+          "elasticbeanstalk:ListTagsForResource",
+          "elasticfilesystem:DescribeAccessPoints",
+          "elasticfilesystem:DescribeBackupPolicy",
+          "elasticfilesystem:DescribeFileSystemPolicy",
+          "elasticfilesystem:DescribeFileSystems",
+          "elasticfilesystem:DescribeMountTargetSecurityGroups",
+          "elasticfilesystem:DescribeMountTargets",
+          "elasticfilesystem:DescribeTags",
+          "elasticloadbalancing:DescribeListeners",
+          "elasticloadbalancing:DescribeLoadBalancerAttributes",
+          "elasticloadbalancing:DescribeLoadBalancerPolicies",
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeRules",
+          "elasticloadbalancing:DescribeSSLPolicies",
+          "elasticloadbalancing:DescribeTags",
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:DescribeTargetHealth",
+          "elasticmapreduce:DescribeCluster",
+          "elasticmapreduce:DescribeSecurityConfiguration"      
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}
+
+resource "aws_iam_policy" "prismacloud6" {
+  name        = join("", ["prisma_cloud_6", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig3",
+        Action: [
+          "elasticmapreduce:DescribeStudio",
+          "elasticmapreduce:GetBlockPublicAccessConfiguration",
+          "elasticmapreduce:ListClusters",
+          "elasticmapreduce:ListInstances",
+          "elasticmapreduce:ListSecurityConfigurations",
+          "elasticmapreduce:ListStudios",
+          "elastictranscoder:ListPipelines",
+          "emr-serverless:GetApplication",
+          "emr-serverless:ListApplications",
+          "es:DescribeElasticsearchDomains",
+          "es:ListDomainNames",
+          "es:ListTags",
+          "events:DescribeArchive",
+          "events:DescribeConnection",
+          "events:ListApiDestinations",
+          "events:ListArchives",
+          "events:ListConnections",
+          "events:ListEndpoints",
+          "events:ListEventBuses",
+          "events:ListRules",
+          "events:ListTagsForResource",
+          "events:ListTargetsByRule",
+          "firehose:DescribeDeliveryStream",
+          "firehose:ListDeliveryStreams",
+          "firehose:ListTagsForDeliveryStream",
+          "fis:GetExperiment",
+          "fis:GetExperimentTemplate",
+          "fis:ListExperimentTemplates",
+          "fis:ListExperiments",
+          "fms:GetAdminAccount",
+          "fms:GetPolicy",
+          "fms:ListComplianceStatus",
+          "fms:ListPolicies",
+          "forecast:DescribeAutoPredictor",
+          "forecast:DescribeDataset",
+          "forecast:DescribePredictor",
+          "forecast:ListDatasets",
+          "forecast:ListPredictors",
+          "forecast:ListTagsForResource",
+          "frauddetector:GetEntityTypes",
+          "frauddetector:GetLabels",
+          "frauddetector:GetVariables",
+          "frauddetector:ListTagsForResource",
+          "fsx:DescribeBackups",
+          "fsx:DescribeFileSystems",
+          "glacier:GetVaultAccessPolicy",
+          "glacier:GetVaultLock",
+          "glacier:ListTagsForVault",
+          "glacier:ListVaults",
+          "globalaccelerator:DescribeAcceleratorAttributes",
+          "globalaccelerator:DescribeEndpointGroup",
+          "globalaccelerator:DescribeListener",
+          "globalaccelerator:ListAccelerators",
+          "globalaccelerator:ListEndpointGroups",
+          "globalaccelerator:ListTagsForResource",
+          "glue:GetConnection",
+          "glue:GetConnections",
+          "glue:GetCrawler",
+          "glue:GetDataCatalogEncryptionSettings",
+          "glue:GetDatabases",
+          "glue:GetDevEndpoints",
+          "glue:GetJobs",
+          "glue:GetResourcePolicies",
+          "glue:GetSchema",
+          "glue:GetSecurityConfigurations",
+          "glue:GetTables",
+          "glue:GetTriggers",
+          "glue:ListCrawlers",
+          "glue:ListSchemas",
+          "grafana:DescribeWorkspace",
+          "grafana:DescribeWorkspaceAuthentication",
+          "grafana:ListWorkspaces",
+          "greengrass:ListCoreDefinitions",
+          "greengrass:ListGroups",
+          "guardduty:DescribeOrganizationConfiguration",
+          "guardduty:GetAdministratorAccount",
+          "guardduty:GetDetector",
+          "guardduty:GetFindings",
+          "guardduty:GetIPSet",
+          "guardduty:GetMasterAccount",
+          "guardduty:GetThreatIntelSet",
+          "guardduty:ListDetectors",
+          "guardduty:ListFindings",
+          "guardduty:ListIPSets",
+          "guardduty:ListThreatIntelSets",
+          "iam:GenerateCredentialReport",
+          "iam:GenerateServiceLastAccessedDetails",
+          "iam:GetAccountAuthorizationDetails",
+          "iam:GetAccountPasswordPolicy",
+          "iam:GetAccountSummary",
+          "iam:GetCredentialReport",
+          "iam:GetGroupPolicy",
+          "iam:GetInstanceProfile",
+          "iam:GetOpenIDConnectProvider",
+          "iam:GetPolicyVersion",
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:GetSAMLProvider",
+          "iam:GetServiceLastAccessedDetails",
+          "iam:GetUserPolicy",
+          "iam:ListAccessKeys",
+          "iam:ListAttachedGroupPolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListAttachedUserPolicies",
+          "iam:ListEntitiesForPolicy",
+          "iam:ListGroupPolicies",
+          "iam:ListGroups",
+          "iam:ListGroupsForUser",
+          "iam:ListInstanceProfiles",
+          "iam:ListInstanceProfilesForRole",
+          "iam:ListMFADeviceTags",
+          "iam:ListMFADevices",
+          "iam:ListOpenIDConnectProviders",
+          "iam:ListPolicies",
+          "iam:ListPolicyTags",
+          "iam:ListPolicyVersions",
+          "iam:ListRolePolicies",
+          "iam:ListRoleTags",
+          "iam:ListRoles",
+          "iam:ListSAMLProviderTags",
+          "iam:ListSAMLProviders",
+          "iam:ListSSHPublicKeys",
+          "iam:ListServerCertificateTags",
+          "iam:ListServerCertificates",
+          "iam:ListServiceSpecificCredentials",
+          "iam:ListUserPolicies",
+          "iam:ListUserTags",
+          "iam:ListUsers",
+          "iam:ListVirtualMFADevices",
+          "identitystore:ListGroupMemberships",
+          "identitystore:ListGroups",
+          "identitystore:ListUsers",
+          "imagebuilder:GetComponent",
+          "imagebuilder:GetImagePipeline",
+          "imagebuilder:GetImageRecipe",
+          "imagebuilder:GetInfrastructureConfiguration",
+          "imagebuilder:ListComponents",
+          "imagebuilder:ListImagePipelines",
+          "imagebuilder:ListImageRecipes",
+          "imagebuilder:ListInfrastructureConfigurations",
+          "inspector2:ListAccountPermissions",
+          "inspector2:ListCoverage",
+          "inspector2:ListFilters",
+          "inspector2:ListFindings",
+          "inspector:DescribeAssessmentTemplates",
+          "inspector:DescribeFindings",
+          "inspector:DescribeRulesPackages",
+          "inspector:ListAssessmentRunAgents",
+          "inspector:ListAssessmentRuns",
+          "inspector:ListAssessmentTemplates",
+          "inspector:ListFindings",
+          "inspector:ListRulesPackages",
+          "iot:DescribeAccountAuditConfiguration",
+          "iot:DescribeDomainConfiguration",
+          "iot:ListDomainConfigurations",
+          "iot:ListTagsForResource",
+          "iotanalytics:ListChannels",
+          "iotanalytics:ListDatastores",
+          "iotanalytics:ListTagsForResource",
+          "iotevents:ListInputs",
+          "iotfleetwise:ListSignalCatalogs",
+          "ivs:GetChannel",
+          "ivs:ListChannels",
+          "kafka:DescribeConfiguration",
+          "kafka:DescribeVpcConnection",
+          "kafka:ListClusters",
+          "kafka:ListConfigurations",
+          "kafka:ListVpcConnections",
+          "kendra:DescribeIndex",
+          "kendra:ListTagsForResource",
+          "kinesis:DescribeStream",
+          "kinesis:ListStreams",
+          "kinesis:ListTagsForStream",
+          "kinesisanalytics:DescribeApplication",
+          "kinesisanalytics:ListApplications",
+          "kinesisanalytics:ListTagsForResource",
+          "kinesisvideo:DescribeNotificationConfiguration",
+          "kinesisvideo:ListStreams",
+          "kinesisvideo:ListTagsForStream",
+          "kms:DescribeKey",
+          "kms:GetKeyPolicy",
+          "kms:GetKeyRotationStatus",
+          "kms:ListAliases",
+          "kms:ListGrants",
+          "kms:ListKeyPolicies",
+          "kms:ListKeyRotations",
+          "kms:ListKeys",
+          "kms:ListResourceTags",
+          "lakeformation:DescribeLakeFormationIdentityCenterConfiguration",
+          "lakeformation:DescribeResource",
+          "lakeformation:GetDataLakeSettings",
+          "lakeformation:GetLFTag",
+          "lakeformation:ListLFTags",
+          "lakeformation:ListPermissions",
+          "lakeformation:ListResources",
+          "lambda:GetEventSourceMapping",
+          "lambda:GetFunctionUrlConfig",
+          "lambda:GetLayerVersion"     
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}
+
+resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy" {
+  name        = join("", ["prisma-cloud-iam-remediation-policy", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig7",
+        Action: [
+          "cloudtrail:StartLogging",
+          "cloudtrail:UpdateTrail",
+          "ec2:ModifyImageAttribute",
+          "ec2:ModifySnapshotAttribute",
+          "ec2:ModifySubnetAttribute",
+          "ec2:RevokeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "eks:UpdateClusterConfig",
+          "elasticache:ModifyReplicationGroup",
+          "elasticloadbalancing:ModifyLoadBalancerAttributes",
+          "iam:UpdateAccountPasswordPolicy",
+          "kms:EnableKeyRotation",
+          "rds:ModifyDBInstance",
+          "rds:ModifyDBSnapshotAttribute",
+          "rds:ModifyEventSubscription",
+          "redshift:ModifyCluster",
+          "s3:PutBucketAcl",
+          "s3:PutBucketPublicAccessBlock",
+          "s3:PutBucketVersioning"   
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}
+
+resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy_compute" {
+  name        = join("", ["prisma-cloud-iam-remediation-policy-compute", "-", var.prisma_cloud_role_name])
+  policy      = {
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PrismaCloudConfig8",
+        Action: [
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:CreateSecurityGroup",
+          "ec2:CreateTags",
+          "lambda:GetLayerVersion",
+          "lambda:PublishLayerVersion",
+          "lambda:UpdateFunctionConfiguration",
+          "ssm:CreateAssociation"   
+        ],
+        Effect: "Allow",
+        Resource: "*"
+      }
+    ]
+  }
+}
+
+/* resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy" {
   role       = aws_iam_role.prisma_cloud_iam_role.name
   policy_arn = aws_iam_policy.prisma_cloud_iam_read_only_policy.arn
 }
@@ -551,13 +1201,8 @@ resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_clou
   count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
   policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy_compute.arn
-}
+} */
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy_all" {
-  role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = aws_iam_policy.prisma_cloud_iam_read_only_policy_all.arn
-}
-
-output "prisma_role_arn" {
+output "prisma_cloud_role_arn" {
   value = aws_iam_role.prisma_cloud_iam_role.arn
 }
