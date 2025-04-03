@@ -1209,15 +1209,15 @@ resource "aws_iam_role_policy_attachment" "prisma_cloud_6" {
 }
 
 resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_remediation_policy" {
-  count      = var.is_read_only ? 0 : 1
+  # count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_iam_remediation_policy-${var.prisma_cloud_role_name}"
+  policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_remediation_policy_compute" {
-  count      = var.is_read_only ? 0 : 1
+  # count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_iam_remediation_policy_compute-${var.prisma_cloud_role_name}"
+  policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy_compute.arn
 }
 
 output "prisma_cloud_role_arn" {

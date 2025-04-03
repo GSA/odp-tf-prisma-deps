@@ -9,11 +9,11 @@ variable external_id {
   description = "External ID of the entity that is allowed to assume this role"
 }
 
-variable "is_read_only" {
+/* variable "is_read_only" {
   type        = bool
   description = "If true, use READ ONLY iam policy, otherwise, grant READ and WRITE policy"
   default     = true
-}
+} */
 
 variable prisma_cloud_role_name {
   type        = string
