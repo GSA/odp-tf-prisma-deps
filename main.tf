@@ -14,17 +14,6 @@ locals  {
 
 resource "aws_iam_role" "prisma_cloud_iam_role" {
   name                = var.prisma_cloud_role_name
-  managed_policy_arns = [
-    join("", ["arn:aws:iam::aws:policy/SecurityAudit"]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_1", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_2", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_3", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_4", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_5", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma_cloud_6", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma-cloud-iam-remediation-policy", "-", var.prisma_cloud_role_name]),
-    join("", ["arn:aws:iam::", data.aws_caller_identity.current.account_id, ":policy/", "prisma-cloud-iam-remediation-policy-compute", "-", var.prisma_cloud_role_name])
-  ]
   max_session_duration = 43200
   assume_role_policy   = <<EOF
 {
@@ -47,6 +36,26 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
 EOF
 }
 
+resource "aws_iam_policy" "prisma_cloud_iam_policy_mgr" {
+  name        = join("", ["prisma_cloud_iam_policy_mgr", "-", var.prisma_cloud_role_name])
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePolicy",
+        "iam:UpdateAccountPasswordPolicy"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_policy" "prismacloud1" {
   name        = join("", ["prisma_cloud_1", "-", var.prisma_cloud_role_name])
   policy      = <<EOF
@@ -62,12 +71,12 @@ resource "aws_iam_policy" "prismacloud1" {
       "Resource": "*"
     },
     {
-      "Sid": "RequiredForAwsElasticbeanstalkConfigurationSettingsApiIngestion"
+      "Sid": "RequiredForAwsElasticbeanstalkConfigurationSettingsApiIngestion",
       "Action": [
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": join("", ["arn:", data.aws_partition.current.partition, ":s3:::elasticbeanstalk-*/*"])
+      "Resource": "arn:${data.aws_partition.current.partition}:s3:::elasticbeanstalk-*/*"
     },
     {
       "Sid": "PrismaCloudGuardduty1",
@@ -120,9 +129,7 @@ resource "aws_iam_policy" "prismacloud1" {
         "events:PutRule",
         "events:RemoveTargets"
       ],
-      "Resource": [
-        join("",["arn:", data.aws_partition.current.aws_partition, ":events:*:", data.aws_caller_identity.current.account_id, ":rule/", local.mappings["EventBridgeMap"]["EventBridgeRuleNamePrefix"]["Value"]])
-      ]
+      "Resource": arn:${data.aws_partition.current.partition}:events:*:${data.aws_caller_identity.current.account_id}:rule/${local.mappings["EventBridgeMap"]["EventBridgeRuleNamePrefix"]["Value"]}"
     },
     {
       "Sid": "PrismaCloudBridgecrew1",
@@ -1186,32 +1193,52 @@ resource "aws_iam_policy" "prisma_cloud_iam_remediation_policy_compute" {
 EOF
 }
 
-/* resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy" {
+resource "aws_iam_role_policy_attachment" "security_audit" {
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = aws_iam_policy.prisma_cloud_iam_read_only_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
 }
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy_elastic_beanstalk" {
+resource "aws_iam_role_policy_attachment" "prisma_cloud_1" {
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = aws_iam_policy.prisma_cloud_iam_read_only_policy_elastic_beanstalk.arn
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_1-${var.prisma_cloud_role_name}"
 }
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_read_only_policy_compute" {
+resource "aws_iam_role_policy_attachment" "prisma_cloud_2" {
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = aws_iam_policy.prisma_cloud_iam_read_only_policy_compute.arn
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_2-${var.prisma_cloud_role_name}"
 }
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_remediation_policy" {
+resource "aws_iam_role_policy_attachment" "prisma_cloud_3" {
+  role       = aws_iam_role.prisma_cloud_iam_role.name
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_3-${var.prisma_cloud_role_name}"
+}
+
+resource "aws_iam_role_policy_attachment" "prisma_cloud_4" {
+  role       = aws_iam_role.prisma_cloud_iam_role.name
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_4-${var.prisma_cloud_role_name}"
+}
+
+resource "aws_iam_role_policy_attachment" "prisma_cloud_5" {
+  role       = aws_iam_role.prisma_cloud_iam_role.name
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_5-${var.prisma_cloud_role_name}"
+}
+
+resource "aws_iam_role_policy_attachment" "prisma_cloud_6" {
+  role       = aws_iam_role.prisma_cloud_iam_role.name
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_6-${var.prisma_cloud_role_name}"
+}
+
+resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_remediation_policy" {
   count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy.arn
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_iam_remediation_policy-${var.prisma_cloud_role_name}"
 }
 
-resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_role_use_prisma_cloud_iam_remediation_policy_compute" {
+resource "aws_iam_role_policy_attachment" "prisma_cloud_iam_remediation_policy_compute" {
   count      = var.is_read_only ? 0 : 1
   role       = aws_iam_role.prisma_cloud_iam_role.name
-  policy_arn = aws_iam_policy.prisma_cloud_iam_remediation_policy_compute.arn
-} */
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/prisma_cloud_iam_remediation_policy_compute-${var.prisma_cloud_role_name}"
+}
 
 output "prisma_cloud_role_arn" {
   value = aws_iam_role.prisma_cloud_iam_role.arn
