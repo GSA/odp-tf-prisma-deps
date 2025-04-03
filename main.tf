@@ -36,26 +36,6 @@ resource "aws_iam_role" "prisma_cloud_iam_role" {
 EOF
 }
 
-resource "aws_iam_policy" "prisma_cloud_iam_policy_mgr" {
-  name        = join("", ["prisma_cloud_iam_policy_mgr", "-", var.prisma_cloud_role_name])
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "iam:CreateRole",
-        "iam:PutRolePolicy",
-        "iam:UpdateAccountPasswordPolicy"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
 resource "aws_iam_policy" "prismacloud1" {
   name        = join("", ["prisma_cloud_1", "-", var.prisma_cloud_role_name])
   policy      = <<EOF
