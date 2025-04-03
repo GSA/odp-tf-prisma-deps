@@ -129,7 +129,7 @@ resource "aws_iam_policy" "prismacloud1" {
         "events:PutRule",
         "events:RemoveTargets"
       ],
-      "Resource": arn:${data.aws_partition.current.partition}:events:*:${data.aws_caller_identity.current.account_id}:rule/${local.mappings["EventBridgeMap"]["EventBridgeRuleNamePrefix"]["Value"]}"
+      "Resource": "arn:${data.aws_partition.current.partition}:events:*:${data.aws_caller_identity.current.account_id}:rule/${local.mappings["EventBridgeMap"]["EventBridgeRuleNamePrefix"]["Value"]}"
     },
     {
       "Sid": "PrismaCloudBridgecrew1",
